@@ -88,6 +88,8 @@
     "evaluationTitlePlaceholder": "Evaluation title…",
     "attentes": "Candidate expectations",
     "attentesPlaceholder": "What the candidate expects: role, salary, conditions…",
+    "specificites": "Candidate specificities",
+    "specificitesPlaceholder": "Contextual info: close to city center, mobility, availability…",
     "save": "Save interview",
     "generateSummary": "Generate interview summary",
     "regenerate": "Regenerate",

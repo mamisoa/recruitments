@@ -133,6 +133,8 @@ def _build_context(
                 lines.append(f"  Note: {note}")
     if interview.attentes_candidat:
         lines.append(f"\n# Candidate expectations\n{interview.attentes_candidat}")
+    if interview.specificites_candidat:
+        lines.append(f"\n# Candidate specificities\n{interview.specificites_candidat}")
     lines.append(
         "\nWrite the interview summary now, ending with a short overall recommendation."
     )

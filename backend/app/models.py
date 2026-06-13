@@ -211,6 +211,7 @@ class InterviewBase(SQLModel):
     score_langues: int | None = Field(default=None, ge=0, le=10)
     note_langues: str | None = None
     attentes_candidat: str | None = None
+    specificites_candidat: str | None = None
     interview_summary: str | None = None  # AI-generated, editable, regenerable
     custom_evaluations: list[CustomEvaluation] = Field(
         default_factory=list, sa_column=Column(JSON)

@@ -69,6 +69,7 @@ export function InterviewPage() {
         score_langues: state.score_langues ?? null,
         note_langues: state.note_langues ?? null,
         attentes_candidat: state.attentes_candidat ?? null,
+        specificites_candidat: state.specificites_candidat ?? null,
         interview_summary: state.interview_summary ?? null,
         custom_evaluations: state.custom_evaluations ?? [],
       }),
@@ -264,6 +265,16 @@ export function InterviewPage() {
               placeholder={t('interview.attentesPlaceholder')}
               value={state.attentes_candidat ?? ''}
               onChange={(e) => set({ attentes_candidat: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{t('interview.specificites')}</Label>
+            <Textarea
+              rows={3}
+              placeholder={t('interview.specificitesPlaceholder')}
+              value={state.specificites_candidat ?? ''}
+              onChange={(e) => set({ specificites_candidat: e.target.value })}
             />
           </div>
 

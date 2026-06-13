@@ -88,6 +88,8 @@
     "evaluationTitlePlaceholder": "Intitulé de l'évaluation…",
     "attentes": "Attentes du candidat",
     "attentesPlaceholder": "Ce que le candidat attend du poste, salaire, conditions…",
+    "specificites": "Spécificités du candidat",
+    "specificitesPlaceholder": "Informations contextuelles : proche du centre ville, mobilité, disponibilité…",
     "save": "Enregistrer l'entretien",
     "generateSummary": "Générer le résumé d'entretien",
     "regenerate": "Régénérer",

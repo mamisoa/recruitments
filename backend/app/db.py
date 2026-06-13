@@ -86,6 +86,7 @@ def _run_light_migrations() -> None:
     additions = {
         "interview": {
             "custom_evaluations": "JSON DEFAULT '[]'",
+            "specificites_candidat": "TEXT",
         },
     }
     inspector = inspect(engine)

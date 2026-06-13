@@ -8,6 +8,13 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- Champ **« Spécificités du candidat »** dans la fiche d'entretien, placé sous
+  « Attentes du candidat » : zone de texte libre (ex. *proche du centre ville*)
+  pour des informations contextuelles. Persisté dans une nouvelle colonne
+  `specificites_candidat` de la table `interview` (migration additive légère au
+  démarrage) et intégré au contexte du résumé d'entretien généré par l'IA.
+- Clés d'internationalisation `interview.specificites` et
+  `interview.specificitesPlaceholder` (FR/EN).
 - Évaluations personnalisées dans la fiche d'entretien : en plus des 4 critères
   fixes, le recruteur peut désormais ajouter autant d'évaluations libres qu'il
   le souhaite, chacune suivant le même schéma (intitulé + note sur curseur 0-10

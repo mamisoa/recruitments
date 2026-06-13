@@ -76,6 +76,7 @@ export interface Interview {
   score_langues: number | null
   note_langues: string | null
   attentes_candidat: string | null
+  specificites_candidat: string | null
   interview_summary: string | null
   custom_evaluations: CustomEvaluation[]
   ai_model: string | null
