@@ -58,6 +58,12 @@ export interface CandidateIdentifiers {
   isikukood: string | null
 }
 
+export interface CustomEvaluation {
+  title: string
+  score: number | null
+  note: string | null
+}
+
 export interface Interview {
   id: number
   candidate_id: number
@@ -71,6 +77,7 @@ export interface Interview {
   note_langues: string | null
   attentes_candidat: string | null
   interview_summary: string | null
+  custom_evaluations: CustomEvaluation[]
   ai_model: string | null
   summary_generated_at: string | null
   updated_at: string

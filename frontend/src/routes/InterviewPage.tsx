@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as api from '@/lib/api'
-import type { Interview } from '@/lib/types'
+import type { CustomEvaluation, Interview } from '@/lib/types'
 import { useInterviewSheet, useHealth, qk } from '@/lib/queries'
 import { Stepper } from '@/components/Stepper'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
@@ -44,6 +45,18 @@ export function InterviewPage() {
 
   const set = (patch: State) => setState((s) => ({ ...s, ...patch }))
 
+  const evaluations = state.custom_evaluations ?? []
+  const addEvaluation = () =>
+    set({ custom_evaluations: [...evaluations, { title: '', score: 0, note: '' }] })
+  const updateEvaluation = (index: number, patch: Partial<CustomEvaluation>) =>
+    set({
+      custom_evaluations: evaluations.map((e, i) =>
+        i === index ? { ...e, ...patch } : e,
+      ),
+    })
+  const removeEvaluation = (index: number) =>
+    set({ custom_evaluations: evaluations.filter((_, i) => i !== index) })
+
   const save = useMutation({
     mutationFn: () =>
       api.saveInterview(id, {
@@ -57,6 +70,7 @@ export function InterviewPage() {
         note_langues: state.note_langues ?? null,
         attentes_candidat: state.attentes_candidat ?? null,
         interview_summary: state.interview_summary ?? null,
+        custom_evaluations: state.custom_evaluations ?? [],
       }),
     onSuccess: (iv) => {
       set(iv)
@@ -182,6 +196,66 @@ export function InterviewPage() {
               </div>
             )
           })}
+
+          <div className="space-y-4 border-t border-border pt-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium">
+                {t('interview.customEvaluations')}
+              </Label>
+              <Button type="button" variant="outline" size="sm" onClick={addEvaluation}>
+                {t('interview.addEvaluation')}
+              </Button>
+            </div>
+            {evaluations.map((evaluation, index) => {
+              const value = evaluation.score ?? 0
+              return (
+                <div
+                  key={index}
+                  className="space-y-2 border-l-2 border-border pl-4"
+                >
+                  <div className="flex items-center gap-2">
+                    <Input
+                      placeholder={t('interview.evaluationTitlePlaceholder')}
+                      value={evaluation.title}
+                      onChange={(e) =>
+                        updateEvaluation(index, { title: e.target.value })
+                      }
+                    />
+                    <span className="shrink-0 font-mono text-sm tabular-nums">
+                      {value}/10
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeEvaluation(index)}
+                    >
+                      {t('interview.removeEvaluation')}
+                    </Button>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={10}
+                    step={1}
+                    value={[value]}
+                    onValueChange={(v) =>
+                      updateEvaluation(index, {
+                        score: Array.isArray(v) ? v[0] : v,
+                      })
+                    }
+                  />
+                  <Textarea
+                    rows={2}
+                    placeholder={t('interview.notePlaceholder')}
+                    value={evaluation.note ?? ''}
+                    onChange={(e) =>
+                      updateEvaluation(index, { note: e.target.value })
+                    }
+                  />
+                </div>
+              )
+            })}
+          </div>
 
           <div className="space-y-2">
             <Label>{t('interview.attentes')}</Label>

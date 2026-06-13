@@ -8,6 +8,17 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- Évaluations personnalisées dans la fiche d'entretien : en plus des 4 critères
+  fixes, le recruteur peut désormais ajouter autant d'évaluations libres qu'il
+  le souhaite, chacune suivant le même schéma (intitulé + note sur curseur 0-10
+  + remarques). Les items s'ajoutent et se suppriment dynamiquement, sont
+  persistés dans une colonne JSON `custom_evaluations` de la table `interview`
+  et alimentent le contexte du résumé d'entretien généré par l'IA.
+- Clés d'internationalisation `interview.customEvaluations`,
+  `interview.addEvaluation`, `interview.removeEvaluation` et
+  `interview.evaluationTitlePlaceholder` (FR/EN).
+- Migration additive légère au démarrage (`_run_light_migrations`) qui ajoute la
+  colonne `custom_evaluations` aux bases SQLite existantes sans recréation.
 - Rendu markdown des textes de la fiche d'entretien : les champs rédigés en
   markdown (présentation entreprise, présentation poste, résumé du profil
   candidat et résumé d'entretien) sont désormais affichés en HTML mis en forme

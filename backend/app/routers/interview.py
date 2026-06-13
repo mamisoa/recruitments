@@ -84,6 +84,22 @@ async def generate_interview_summary(
     return interview
 
 
+def _eval_field(evaluation: object, name: str) -> object:
+    """Read a field from a custom evaluation, tolerating dict or model shape.
+
+    Values loaded straight from the JSON column arrive as dicts; values just
+    assigned in-process are CustomEvaluation instances.
+    """
+    if isinstance(evaluation, dict):
+        return evaluation.get(name)
+    return getattr(evaluation, name, None)
+
+
+def _eval_title(evaluation: object) -> str:
+    title = _eval_field(evaluation, "title")
+    return str(title).strip() if title else ""
+
+
 def _build_context(
     position: Position | None, candidate: Candidate, interview: Interview
 ) -> str:
@@ -105,6 +121,16 @@ def _build_context(
         lines.append(f"- {label}: {score if score is not None else 'n/a'}/10")
         if note:
             lines.append(f"  Note: {note}")
+    custom = [e for e in (interview.custom_evaluations or []) if _eval_title(e)]
+    if custom:
+        lines.append("\n# Additional evaluations")
+        for evaluation in custom:
+            title = _eval_field(evaluation, "title")
+            score = _eval_field(evaluation, "score")
+            note = _eval_field(evaluation, "note")
+            lines.append(f"- {title}: {score if score is not None else 'n/a'}/10")
+            if note:
+                lines.append(f"  Note: {note}")
     if interview.attentes_candidat:
         lines.append(f"\n# Candidate expectations\n{interview.attentes_candidat}")
     lines.append(

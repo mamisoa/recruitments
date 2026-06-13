@@ -82,6 +82,10 @@
       "langues": "Capacités en langues étrangères"
     },
     "notePlaceholder": "Remarques…",
+    "customEvaluations": "Évaluations complémentaires",
+    "addEvaluation": "+ Ajouter une évaluation",
+    "removeEvaluation": "Supprimer",
+    "evaluationTitlePlaceholder": "Intitulé de l'évaluation…",
     "attentes": "Attentes du candidat",
     "attentesPlaceholder": "Ce que le candidat attend du poste, salaire, conditions…",
     "save": "Enregistrer l'entretien",

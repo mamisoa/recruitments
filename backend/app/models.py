@@ -11,6 +11,7 @@ from datetime import date, datetime, timezone
 from typing import Optional
 
 from pydantic import computed_field, field_validator
+from sqlalchemy import JSON, Column
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -189,6 +190,17 @@ class CvFileRead(SQLModel):
 # --------------------------------------------------------------------------- #
 # Interview (1:1 with candidate)
 # --------------------------------------------------------------------------- #
+class CustomEvaluation(SQLModel):
+    """A free-form interview evaluation: title + 0-10 score + note.
+
+    Stored as a JSON list on the Interview row (see InterviewBase below).
+    """
+
+    title: str = ""
+    score: int | None = Field(default=None, ge=0, le=10)
+    note: str | None = None
+
+
 class InterviewBase(SQLModel):
     score_fluence: int | None = Field(default=None, ge=0, le=10)
     note_fluence: str | None = None
@@ -200,6 +212,9 @@ class InterviewBase(SQLModel):
     note_langues: str | None = None
     attentes_candidat: str | None = None
     interview_summary: str | None = None  # AI-generated, editable, regenerable
+    custom_evaluations: list[CustomEvaluation] = Field(
+        default_factory=list, sa_column=Column(JSON)
+    )
 
 
 class Interview(InterviewBase, table=True):

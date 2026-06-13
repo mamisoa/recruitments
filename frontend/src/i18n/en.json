@@ -82,6 +82,10 @@
       "langues": "Foreign language abilities"
     },
     "notePlaceholder": "Notes…",
+    "customEvaluations": "Additional evaluations",
+    "addEvaluation": "+ Add evaluation",
+    "removeEvaluation": "Remove",
+    "evaluationTitlePlaceholder": "Evaluation title…",
     "attentes": "Candidate expectations",
     "attentesPlaceholder": "What the candidate expects: role, salary, conditions…",
     "save": "Save interview",
