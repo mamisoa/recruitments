@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      UPLOAD_DIR: /data/uploads
+      # Same-origin in the container, so CORS is unnecessary.
+      CORS_ORIGINS: "[]"
+    volumes:
+      - app-data:/data
+    restart: unless-stopped
+
+volumes:
+  app-data:

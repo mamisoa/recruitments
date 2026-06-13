@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "Recrutement",
+    "subtitle": "Assistant d'entretien"
+  },
+  "nav": {
+    "positions": "Postes",
+    "language": "Langue"
+  },
+  "steps": {
+    "position": "1. Poste & entreprise",
+    "candidate": "2. Candidat",
+    "interview": "3. Fiche d'entretien"
+  },
+  "positions": {
+    "heading": "Postes",
+    "new": "Nouveau poste",
+    "create": "Créer le poste",
+    "title": "Intitulé du poste",
+    "titlePlaceholder": "ex. Ingénieur backend",
+    "candidates": "candidat(s)",
+    "empty": "Aucun poste pour l'instant. Créez-en un pour commencer.",
+    "updated": "Mis à jour",
+    "open": "Ouvrir"
+  },
+  "position": {
+    "companyUrl": "URL de l'entreprise",
+    "companyUrlPlaceholder": "https://entreprise.com",
+    "jobSource": "Description du poste",
+    "jobSourceHint": "Collez une URL ou directement le texte de l'offre",
+    "jobIsUrl": "C'est une URL",
+    "generate": "Générer avec l'IA",
+    "generating": "Génération…",
+    "companyPresentation": "Présentation de l'entreprise",
+    "jobPresentation": "Présentation du poste",
+    "presentationPlaceholder": "Le texte généré apparaîtra ici et reste modifiable.",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "candidatesHeading": "Candidats",
+    "addCandidate": "Ajouter un candidat"
+  },
+  "candidate": {
+    "heading": "Fiche candidat",
+    "nom": "Nom",
+    "prenom": "Prénom",
+    "ddn": "Date de naissance",
+    "email": "Email",
+    "telephone": "Téléphone",
+    "isikukood": "Code d'identification (isikukood)",
+    "statutMarital": "Statut marital",
+    "statutEtudiant": "Statut étudiant",
+    "isStudent": "Est étudiant",
+    "cvFiles": "Fichiers CV (PDF / TXT)",
+    "upload": "Téléverser",
+    "uploading": "Téléversement…",
+    "noCvs": "Aucun fichier téléversé.",
+    "readCvs": "Lire les CV (IA)",
+    "reading": "Lecture…",
+    "proposed": "Identifiants proposés par l'IA",
+    "proposedHint": "Vérifiez puis acceptez les valeurs à reporter dans le formulaire.",
+    "accept": "Accepter",
+    "acceptAll": "Tout accepter",
+    "current": "Actuel",
+    "generateSummary": "Générer le résumé du profil",
+    "profileSummary": "Résumé du profil",
+    "summaryPlaceholder": "Le résumé généré apparaîtra ici et reste modifiable.",
+    "save": "Enregistrer le candidat",
+    "goToInterview": "Aller à la fiche d'entretien",
+    "delete": "Supprimer le candidat",
+    "age": "Âge"
+  },
+  "interview": {
+    "heading": "Fiche d'entretien",
+    "context": "Contexte poste & entreprise",
+    "candidateFacts": "Candidat",
+    "editCandidate": "Éditer le candidat",
+    "scores": "Évaluation",
+    "criteria": {
+      "fluence": "Fluence du langage",
+      "professionnalisme": "Professionnalisme",
+      "competences": "Compétences",
+      "langues": "Capacités en langues étrangères"
+    },
+    "notePlaceholder": "Remarques…",
+    "attentes": "Attentes du candidat",
+    "attentesPlaceholder": "Ce que le candidat attend du poste, salaire, conditions…",
+    "save": "Enregistrer l'entretien",
+    "generateSummary": "Générer le résumé d'entretien",
+    "regenerate": "Régénérer",
+    "summary": "Résumé d'entretien",
+    "summaryPlaceholder": "Le résumé généré apparaîtra ici et reste modifiable."
+  },
+  "common": {
+    "back": "Retour",
+    "cancel": "Annuler",
+    "loading": "Chargement…",
+    "error": "Erreur",
+    "saved": "Enregistré ✓",
+    "generated": "Généré ✓",
+    "aiDisabled": "L'IA est désactivée : ajoutez OPENROUTER_API_KEY dans .env."
+  }
+}

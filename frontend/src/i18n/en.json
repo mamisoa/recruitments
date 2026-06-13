@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "Recruitment",
+    "subtitle": "Interview assistant"
+  },
+  "nav": {
+    "positions": "Positions",
+    "language": "Language"
+  },
+  "steps": {
+    "position": "1. Position & company",
+    "candidate": "2. Candidate",
+    "interview": "3. Interview sheet"
+  },
+  "positions": {
+    "heading": "Positions",
+    "new": "New position",
+    "create": "Create position",
+    "title": "Position title",
+    "titlePlaceholder": "e.g. Backend Engineer",
+    "candidates": "candidate(s)",
+    "empty": "No positions yet. Create one to get started.",
+    "updated": "Updated",
+    "open": "Open"
+  },
+  "position": {
+    "companyUrl": "Company URL",
+    "companyUrlPlaceholder": "https://company.com",
+    "jobSource": "Job description",
+    "jobSourceHint": "Paste a URL or the job offer text directly",
+    "jobIsUrl": "This is a URL",
+    "generate": "Generate with AI",
+    "generating": "Generating…",
+    "companyPresentation": "Company presentation",
+    "jobPresentation": "Job presentation",
+    "presentationPlaceholder": "Generated text appears here and stays editable.",
+    "save": "Save",
+    "saved": "Saved",
+    "candidatesHeading": "Candidates",
+    "addCandidate": "Add candidate"
+  },
+  "candidate": {
+    "heading": "Candidate sheet",
+    "nom": "Last name",
+    "prenom": "First name",
+    "ddn": "Date of birth",
+    "email": "Email",
+    "telephone": "Phone",
+    "isikukood": "Personal ID code (isikukood)",
+    "statutMarital": "Marital status",
+    "statutEtudiant": "Student status",
+    "isStudent": "Is a student",
+    "cvFiles": "CV files (PDF / TXT)",
+    "upload": "Upload",
+    "uploading": "Uploading…",
+    "noCvs": "No files uploaded.",
+    "readCvs": "Read CVs (AI)",
+    "reading": "Reading…",
+    "proposed": "AI-proposed identifiers",
+    "proposedHint": "Review then accept the values to apply them to the form.",
+    "accept": "Accept",
+    "acceptAll": "Accept all",
+    "current": "Current",
+    "generateSummary": "Generate profile summary",
+    "profileSummary": "Profile summary",
+    "summaryPlaceholder": "Generated summary appears here and stays editable.",
+    "save": "Save candidate",
+    "goToInterview": "Go to interview sheet",
+    "delete": "Delete candidate",
+    "age": "Age"
+  },
+  "interview": {
+    "heading": "Interview sheet",
+    "context": "Position & company context",
+    "candidateFacts": "Candidate",
+    "editCandidate": "Edit candidate",
+    "scores": "Assessment",
+    "criteria": {
+      "fluence": "Language fluency",
+      "professionnalisme": "Professionalism",
+      "competences": "Skills",
+      "langues": "Foreign language abilities"
+    },
+    "notePlaceholder": "Notes…",
+    "attentes": "Candidate expectations",
+    "attentesPlaceholder": "What the candidate expects: role, salary, conditions…",
+    "save": "Save interview",
+    "generateSummary": "Generate interview summary",
+    "regenerate": "Regenerate",
+    "summary": "Interview summary",
+    "summaryPlaceholder": "Generated summary appears here and stays editable."
+  },
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "loading": "Loading…",
+    "error": "Error",
+    "saved": "Saved ✓",
+    "generated": "Generated ✓",
+    "aiDisabled": "AI is disabled: add OPENROUTER_API_KEY to .env."
+  }
+}

@@ -1,0 +1,21 @@
+[project]
+name = "recruitments-backend"
+version = "0.1.0"
+description = "Recruitment workflow app — FastAPI backend"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlmodel>=0.0.22",
+    "pydantic-settings>=2.5",
+    "pydantic-ai-slim[openrouter]>=0.0.14",
+    "trafilatura>=1.12",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv]
+package = false

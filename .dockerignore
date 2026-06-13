@@ -1,0 +1,20 @@
+# VCS / tooling
+.git
+.gitignore
+*.md
+
+# Python
+**/__pycache__
+**/*.pyc
+backend/.venv
+backend/data
+backend/static
+
+# Node / frontend
+frontend/node_modules
+frontend/dist
+
+# Local secrets & data
+.env
+**/.env
+data
