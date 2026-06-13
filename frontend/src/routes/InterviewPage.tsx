@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Markdown } from '@/components/Markdown'
 
 type ScoreKey = 'fluence' | 'professionnalisme' | 'competences' | 'langues'
 const CRITERIA: { key: ScoreKey; score: keyof Interview; note: keyof Interview }[] = [
@@ -36,6 +37,7 @@ export function InterviewPage() {
   const { data: health } = useHealth()
 
   const [state, setState] = useState<State>({})
+  const [editingSummary, setEditingSummary] = useState(false)
   useEffect(() => {
     if (sheet) setState(sheet.interview ?? {})
   }, [sheet])
@@ -105,14 +107,14 @@ export function InterviewPage() {
               <p className="font-medium">{position.title}</p>
             </div>
             {position.company_presentation && (
-              <p className="whitespace-pre-wrap text-muted-foreground">
+              <Markdown className="text-muted-foreground">
                 {position.company_presentation}
-              </p>
+              </Markdown>
             )}
             {position.job_presentation && (
-              <p className="whitespace-pre-wrap text-muted-foreground">
+              <Markdown className="text-muted-foreground">
                 {position.job_presentation}
-              </p>
+              </Markdown>
             )}
           </CardContent>
         </Card>
@@ -141,9 +143,9 @@ export function InterviewPage() {
               )}
             </p>
             {candidate.profile_summary && (
-              <p className="whitespace-pre-wrap text-muted-foreground">
+              <Markdown className="text-muted-foreground">
                 {candidate.profile_summary}
-              </p>
+              </Markdown>
             )}
           </CardContent>
         </Card>
@@ -201,25 +203,40 @@ export function InterviewPage() {
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             {t('interview.summary')}
-            <Button
-              onClick={() => generate.mutate()}
-              disabled={generate.isPending || !health?.ai_enabled}
-            >
-              {generate.isPending
-                ? t('position.generating')
-                : hasSummary
-                  ? t('interview.regenerate')
-                  : t('interview.generateSummary')}
-            </Button>
+            <div className="flex items-center gap-2">
+              {hasSummary && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingSummary((v) => !v)}
+                >
+                  {editingSummary ? t('interview.preview') : t('interview.edit')}
+                </Button>
+              )}
+              <Button
+                onClick={() => generate.mutate()}
+                disabled={generate.isPending || !health?.ai_enabled}
+              >
+                {generate.isPending
+                  ? t('position.generating')
+                  : hasSummary
+                    ? t('interview.regenerate')
+                    : t('interview.generateSummary')}
+              </Button>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Textarea
-            rows={9}
-            placeholder={t('interview.summaryPlaceholder')}
-            value={state.interview_summary ?? ''}
-            onChange={(e) => set({ interview_summary: e.target.value })}
-          />
+          {hasSummary && !editingSummary ? (
+            <Markdown>{state.interview_summary as string}</Markdown>
+          ) : (
+            <Textarea
+              rows={9}
+              placeholder={t('interview.summaryPlaceholder')}
+              value={state.interview_summary ?? ''}
+              onChange={(e) => set({ interview_summary: e.target.value })}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

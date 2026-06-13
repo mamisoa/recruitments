@@ -88,6 +88,8 @@
     "generateSummary": "Générer le résumé d'entretien",
     "regenerate": "Régénérer",
     "summary": "Résumé d'entretien",
+    "edit": "Modifier",
+    "preview": "Aperçu",
     "summaryPlaceholder": "Le résumé généré apparaîtra ici et reste modifiable."
   },
   "common": {

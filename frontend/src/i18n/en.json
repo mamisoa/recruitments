@@ -88,6 +88,8 @@
     "generateSummary": "Generate interview summary",
     "regenerate": "Regenerate",
     "summary": "Interview summary",
+    "edit": "Edit",
+    "preview": "Preview",
     "summaryPlaceholder": "Generated summary appears here and stays editable."
   },
   "common": {
