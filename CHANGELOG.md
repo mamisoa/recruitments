@@ -7,6 +7,12 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Modifié
+- Le champ **« Résumé du candidat »** de la fiche candidat s'affiche désormais en
+  markdown formaté (comme les présentations de la fiche du poste). Un bouton
+  « Éditer » ouvre une modale pour modifier le texte brut, enregistré immédiatement
+  via l'API (composant réutilisable `EditableMarkdown`).
+
 ### Ajouté
 - Champ **« Critères de sélection »** dans la fiche du poste, sous les présentations
   entreprise et poste : champ markdown éditable (même composant et même édition par

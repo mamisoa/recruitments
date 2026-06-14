@@ -13,7 +13,7 @@ import { Stepper } from '@/components/Stepper'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { EditableMarkdown } from '@/components/EditableMarkdown'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
@@ -115,6 +115,16 @@ export function CandidatePage() {
   const extract = useMutation({
     mutationFn: () => api.extractIdentifiers(id),
     onSuccess: (data) => setProposed(data),
+    onError: (e: Error) => toast.error(e.message),
+  })
+
+  const saveSummary = useMutation({
+    mutationFn: (profile_summary: string) => api.updateCandidate(id, { profile_summary }),
+    onSuccess: (c) => {
+      setValue('profile_summary', c.profile_summary ?? '')
+      refresh()
+      toast.success(t('common.saved'))
+    },
     onError: (e: Error) => toast.error(e.message),
   })
 
@@ -302,14 +312,12 @@ export function CandidatePage() {
       </Card>
 
       <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>{t('candidate.profileSummary')}</CardTitle>
-        </CardHeader>
         <CardContent>
-          <Textarea
-            rows={7}
+          <EditableMarkdown
+            label={t('candidate.profileSummary')}
+            value={watch('profile_summary') ?? ''}
             placeholder={t('candidate.summaryPlaceholder')}
-            {...register('profile_summary')}
+            onSave={(v) => saveSummary.mutateAsync(v)}
           />
         </CardContent>
       </Card>
