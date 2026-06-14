@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -17,10 +17,14 @@ export function CompanyPage() {
   const { data: company, isLoading } = useCompany()
   const { data: health } = useHealth()
 
+  // Sync server data into the editable form when it (re)loads. Done during
+  // render via a tracked previous value rather than in an effect.
   const [form, setForm] = useState<Partial<Company>>({})
-  useEffect(() => {
-    if (company) setForm(company)
-  }, [company])
+  const [synced, setSynced] = useState(company)
+  if (company && company !== synced) {
+    setSynced(company)
+    setForm(company)
+  }
 
   const set = (patch: Partial<Company>) => setForm((f) => ({ ...f, ...patch }))
 

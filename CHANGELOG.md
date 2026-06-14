@@ -23,6 +23,27 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
   `GET /candidates/{id}/interview/summary/prompt` (paramètre `lang`).
 
 ### Modifié
+- **Refactor structurel (isolation de compétence, fichiers < 300 lignes)** : aucun fichier
+  applicatif ne dépasse désormais 300 lignes. Les pages volumineuses ont été découpées —
+  une compétence par fichier — sans changement de comportement :
+  - `routes/InterviewPage.tsx` (372 → ~70) : logique et état extraits dans
+    `components/interview/useInterviewForm.ts`, et UI répartie en cartes dédiées
+    (`InterviewContextCards`, `InterviewScoresCard`, `CustomEvaluations`, `InterviewSummaryCard`),
+    constantes/types dans `criteria.ts`.
+  - `routes/CandidatePage.tsx` (364 → ~115) : `components/candidate/useCandidateForm.ts`,
+    `schema.ts`, `CandidateIdentityCard`, `CandidateCvCard`.
+  - `routes/PositionDetail.tsx` (256 → ~120) : `components/position/usePositionForm.ts`
+    et `CandidatesCard`.
+  - Backend : `app/models.py` (286) éclaté en package `app/models/` (un module par entité :
+    `common`, `company`, `position`, `candidate`, `cv`, `interview`, `aggregates`), avec
+    ré-export complet dans `__init__.py` — les imports `from app.models import X` restent
+    inchangés.
+  - **Lint propre (`eslint .` → 0 erreur)** : la synchronisation des données serveur vers
+    l'état de formulaire local (pages Entreprise/Poste/Entretien) se fait désormais en phase
+    de rendu via une valeur précédente suivie, au lieu d'un `useEffect` (règle
+    `react-hooks/set-state-in-effect`) ; les constantes `*Variants` non utilisées hors de
+    leur fichier ne sont plus exportées par `ui/button`, `ui/badge`, `ui/tabs`
+    (règle `react-refresh/only-export-components`).
 - **Sidebar collante** : son contenu reste visible au défilement (sticky en haut sur
   desktop). Le **sélecteur de langue** est désormais épinglé en haut à droite du viewport
   (position fixe) au lieu d'être en bas de la sidebar.

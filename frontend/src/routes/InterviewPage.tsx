@@ -1,117 +1,24 @@
-import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
-import * as api from '@/lib/api'
-import type { CustomEvaluation, Interview } from '@/lib/types'
-import { useInterviewSheet, useCompany, useHealth, qk } from '@/lib/queries'
+import { useInterviewSheet, useCompany, useHealth } from '@/lib/queries'
 import { Stepper } from '@/components/Stepper'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Slider } from '@/components/ui/slider'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import { Markdown } from '@/components/Markdown'
-
-type ScoreKey = 'fluence' | 'professionnalisme' | 'competences' | 'langues'
-const CRITERIA: { key: ScoreKey; score: keyof Interview; note: keyof Interview }[] = [
-  { key: 'fluence', score: 'score_fluence', note: 'note_fluence' },
-  {
-    key: 'professionnalisme',
-    score: 'score_professionnalisme',
-    note: 'note_professionnalisme',
-  },
-  { key: 'competences', score: 'score_competences', note: 'note_competences' },
-  { key: 'langues', score: 'score_langues', note: 'note_langues' },
-]
-
-type State = Partial<Interview>
+import { useInterviewForm } from '@/components/interview/useInterviewForm'
+import { InterviewContextCards } from '@/components/interview/InterviewContextCards'
+import { InterviewScoresCard } from '@/components/interview/InterviewScoresCard'
+import { InterviewSummaryCard } from '@/components/interview/InterviewSummaryCard'
 
 export function InterviewPage() {
   const { candidateId } = useParams()
   const id = Number(candidateId)
-  const { t, i18n } = useTranslation()
-  const queryClient = useQueryClient()
+  const { t } = useTranslation()
   const { data: sheet, isLoading } = useInterviewSheet(id)
   const { data: company } = useCompany()
   const { data: health } = useHealth()
-
-  const [state, setState] = useState<State>({})
-  const [editingSummary, setEditingSummary] = useState(false)
-  const [promptOpen, setPromptOpen] = useState(false)
-  useEffect(() => {
-    if (sheet) setState(sheet.interview ?? {})
-  }, [sheet])
-
-  const set = (patch: State) => setState((s) => ({ ...s, ...patch }))
-
-  const evaluations = state.custom_evaluations ?? []
-  const addEvaluation = () =>
-    set({ custom_evaluations: [...evaluations, { title: '', score: 0, note: '' }] })
-  const updateEvaluation = (index: number, patch: Partial<CustomEvaluation>) =>
-    set({
-      custom_evaluations: evaluations.map((e, i) =>
-        i === index ? { ...e, ...patch } : e,
-      ),
-    })
-  const removeEvaluation = (index: number) =>
-    set({ custom_evaluations: evaluations.filter((_, i) => i !== index) })
-
-  const save = useMutation({
-    mutationFn: () =>
-      api.saveInterview(id, {
-        score_fluence: state.score_fluence ?? null,
-        note_fluence: state.note_fluence ?? null,
-        score_professionnalisme: state.score_professionnalisme ?? null,
-        note_professionnalisme: state.note_professionnalisme ?? null,
-        score_competences: state.score_competences ?? null,
-        note_competences: state.note_competences ?? null,
-        score_langues: state.score_langues ?? null,
-        note_langues: state.note_langues ?? null,
-        attentes_candidat: state.attentes_candidat ?? null,
-        specificites_candidat: state.specificites_candidat ?? null,
-        interview_summary: state.interview_summary ?? null,
-        custom_evaluations: state.custom_evaluations ?? [],
-      }),
-    onSuccess: (iv) => {
-      set(iv)
-      void queryClient.invalidateQueries({ queryKey: qk.sheet(id) })
-      toast.success(t('common.saved'))
-    },
-    onError: (e: Error) => toast.error(e.message),
-  })
-
-  const generate = useMutation({
-    mutationFn: async () => {
-      await save.mutateAsync()
-      return api.generateInterviewSummary(id, i18n.language)
-    },
-    onSuccess: (iv) => {
-      set({ interview_summary: iv.interview_summary })
-      void queryClient.invalidateQueries({ queryKey: qk.sheet(id) })
-      toast.success(t('common.generated'))
-    },
-    onError: (e: Error) => toast.error(e.message),
-  })
-
-  const viewPrompt = useMutation({
-    mutationFn: () => api.getInterviewPrompt(id, i18n.language),
-    onSuccess: () => setPromptOpen(true),
-    onError: (e: Error) => toast.error(e.message),
-  })
+  const form = useInterviewForm(id, sheet)
 
   if (isLoading || !sheet) return <p>{t('common.loading')}</p>
 
   const { position, candidate } = sheet
-  const hasSummary = !!state.interview_summary
 
   return (
     <div>
@@ -126,247 +33,35 @@ export function InterviewPage() {
 
       <h1 className="mb-4 text-2xl font-semibold">{t('interview.heading')}</h1>
 
-      <div className="mb-6 grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">{t('interview.context')}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div>
-              <p className="font-medium">{position.title}</p>
-            </div>
-            {company?.company_presentation && (
-              <Markdown className="text-muted-foreground">
-                {company.company_presentation}
-              </Markdown>
-            )}
-            {position.job_presentation && (
-              <Markdown className="text-muted-foreground">
-                {position.job_presentation}
-              </Markdown>
-            )}
-          </CardContent>
-        </Card>
+      <InterviewContextCards
+        id={id}
+        position={position}
+        candidate={candidate}
+        company={company}
+      />
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between text-base">
-              {t('interview.candidateFacts')}
-              <Button
-                render={<Link to={`/candidates/${id}`} />}
-                size="sm"
-                variant="outline"
-              >
-                {t('interview.editCandidate')}
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
-            <p className="font-medium">
-              {candidate.prenom} {candidate.nom}
-              {candidate.age != null && (
-                <span className="text-muted-foreground">
-                  {' '}
-                  · {t('candidate.age')} {candidate.age}
-                </span>
-              )}
-            </p>
-            <p className="text-muted-foreground">
-              {candidate.statut_marital && (
-                <span>
-                  {t('candidate.statutMarital')}: {candidate.statut_marital}
-                </span>
-              )}
-              {candidate.statut_marital && ' · '}
-              {t('candidate.statutEtudiant')}:{' '}
-              {candidate.statut_etudiant ? t('common.yes') : t('common.no')}
-            </p>
-            {candidate.profile_summary && (
-              <Markdown className="text-muted-foreground">
-                {candidate.profile_summary}
-              </Markdown>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      <InterviewScoresCard
+        state={form.state}
+        set={form.set}
+        evaluations={form.evaluations}
+        onAddEvaluation={form.addEvaluation}
+        onUpdateEvaluation={form.updateEvaluation}
+        onRemoveEvaluation={form.removeEvaluation}
+        onSave={() => form.save.mutate()}
+        saving={form.save.isPending}
+      />
 
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>{t('interview.scores')}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {CRITERIA.map(({ key, score, note }) => {
-            const value = (state[score] as number | null) ?? 0
-            return (
-              <div key={key} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label>{t(`interview.criteria.${key}`)}</Label>
-                  <span className="font-mono text-sm tabular-nums">{value}/10</span>
-                </div>
-                <Slider
-                  min={0}
-                  max={10}
-                  step={1}
-                  value={[value]}
-                  onValueChange={(v) =>
-                    set({ [score]: Array.isArray(v) ? v[0] : v } as State)
-                  }
-                />
-                <Textarea
-                  rows={2}
-                  placeholder={t('interview.notePlaceholder')}
-                  value={(state[note] as string | null) ?? ''}
-                  onChange={(e) => set({ [note]: e.target.value } as State)}
-                />
-              </div>
-            )
-          })}
-
-          <div className="space-y-4 border-t border-border pt-4">
-            <div className="flex items-center justify-between">
-              <Label className="text-sm font-medium">
-                {t('interview.customEvaluations')}
-              </Label>
-              <Button type="button" variant="outline" size="sm" onClick={addEvaluation}>
-                {t('interview.addEvaluation')}
-              </Button>
-            </div>
-            {evaluations.map((evaluation, index) => {
-              const value = evaluation.score ?? 0
-              return (
-                <div
-                  key={index}
-                  className="space-y-2 border-l-2 border-border pl-4"
-                >
-                  <div className="flex items-center gap-2">
-                    <Input
-                      placeholder={t('interview.evaluationTitlePlaceholder')}
-                      value={evaluation.title}
-                      onChange={(e) =>
-                        updateEvaluation(index, { title: e.target.value })
-                      }
-                    />
-                    <span className="shrink-0 font-mono text-sm tabular-nums">
-                      {value}/10
-                    </span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeEvaluation(index)}
-                    >
-                      {t('interview.removeEvaluation')}
-                    </Button>
-                  </div>
-                  <Slider
-                    min={0}
-                    max={10}
-                    step={1}
-                    value={[value]}
-                    onValueChange={(v) =>
-                      updateEvaluation(index, {
-                        score: Array.isArray(v) ? v[0] : v,
-                      })
-                    }
-                  />
-                  <Textarea
-                    rows={2}
-                    placeholder={t('interview.notePlaceholder')}
-                    value={evaluation.note ?? ''}
-                    onChange={(e) =>
-                      updateEvaluation(index, { note: e.target.value })
-                    }
-                  />
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="space-y-2">
-            <Label>{t('interview.attentes')}</Label>
-            <Textarea
-              rows={3}
-              placeholder={t('interview.attentesPlaceholder')}
-              value={state.attentes_candidat ?? ''}
-              onChange={(e) => set({ attentes_candidat: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>{t('interview.specificites')}</Label>
-            <Textarea
-              rows={3}
-              placeholder={t('interview.specificitesPlaceholder')}
-              value={state.specificites_candidat ?? ''}
-              onChange={(e) => set({ specificites_candidat: e.target.value })}
-            />
-          </div>
-
-          <Button onClick={() => save.mutate()} disabled={save.isPending}>
-            {t('interview.save')}
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            {t('interview.summary')}
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => viewPrompt.mutate()}
-                disabled={viewPrompt.isPending}
-              >
-                {t('interview.viewPrompt')}
-              </Button>
-              {hasSummary && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setEditingSummary((v) => !v)}
-                >
-                  {editingSummary ? t('interview.preview') : t('interview.edit')}
-                </Button>
-              )}
-              <Button
-                onClick={() => generate.mutate()}
-                disabled={generate.isPending || !health?.ai_enabled}
-              >
-                {generate.isPending
-                  ? t('position.generating')
-                  : hasSummary
-                    ? t('interview.regenerate')
-                    : t('interview.generateSummary')}
-              </Button>
-            </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {hasSummary && !editingSummary ? (
-            <Markdown>{state.interview_summary as string}</Markdown>
-          ) : (
-            <Textarea
-              rows={9}
-              placeholder={t('interview.summaryPlaceholder')}
-              value={state.interview_summary ?? ''}
-              onChange={(e) => set({ interview_summary: e.target.value })}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      <Dialog open={promptOpen} onOpenChange={setPromptOpen}>
-        <DialogContent className="flex max-h-[calc(100dvh-2rem)] flex-col sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{t('interview.promptTitle')}</DialogTitle>
-          </DialogHeader>
-          <div className="flex-1 overflow-y-auto">
-            <Markdown>{viewPrompt.data?.prompt ?? ''}</Markdown>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <InterviewSummaryCard
+        state={form.state}
+        set={form.set}
+        editing={form.editingSummary}
+        onToggleEditing={() => form.setEditingSummary((v) => !v)}
+        generate={form.generate}
+        viewPrompt={form.viewPrompt}
+        promptOpen={form.promptOpen}
+        setPromptOpen={form.setPromptOpen}
+        aiEnabled={!!health?.ai_enabled}
+      />
     </div>
   )
 }
