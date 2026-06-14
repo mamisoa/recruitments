@@ -69,7 +69,11 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-background text-foreground md:flex">
-      <aside className="border-b md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
+      <div className="fixed right-4 top-4 z-50">
+        <LanguageSwitcher />
+      </div>
+
+      <aside className="border-b md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:self-start md:border-b-0 md:border-r">
         <div className="flex h-full flex-col gap-4 p-4">
           <Link to="/" className="flex flex-col">
             <span className="text-lg font-semibold leading-tight">{t('app.title')}</span>
@@ -92,12 +96,11 @@ export function Layout() {
             />
           </nav>
 
-          <div className="mt-auto flex items-center justify-between gap-2">
-            {health && !health.ai_enabled && (
+          {health && !health.ai_enabled && (
+            <div className="mt-auto">
               <span className="text-xs text-destructive">{t('common.aiDisabled')}</span>
-            )}
-            <LanguageSwitcher />
-          </div>
+            </div>
+          )}
         </div>
       </aside>
 

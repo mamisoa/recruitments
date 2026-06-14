@@ -23,6 +23,9 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
   `GET /candidates/{id}/interview/summary/prompt` (paramètre `lang`).
 
 ### Modifié
+- **Sidebar collante** : son contenu reste visible au défilement (sticky en haut sur
+  desktop). Le **sélecteur de langue** est désormais épinglé en haut à droite du viewport
+  (position fixe) au lieu d'être en bas de la sidebar.
 - **Page détail du poste** allégée : l'URL et la présentation de l'entreprise ont migré
   vers la page Entreprise. Le poste ne contient plus que la source de l'annonce + génération
   IA (présentation du poste uniquement), la présentation du poste, les critères de sélection
