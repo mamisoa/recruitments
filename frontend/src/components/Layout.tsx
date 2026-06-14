@@ -7,10 +7,12 @@ import { cn } from '@/lib/utils'
 
 function LanguageSwitcher() {
   const { i18n } = useTranslation()
-  const lang = i18n.language?.startsWith('en') ? 'en' : 'fr'
+  const LANGS = ['fr', 'en', 'et', 'de', 'nl'] as const
+  const current = i18n.language?.split('-')[0] ?? 'fr'
+  const lang = (LANGS as readonly string[]).includes(current) ? current : 'fr'
   return (
     <div className="flex items-center gap-1 rounded-md border p-0.5">
-      {(['fr', 'en'] as const).map((l) => (
+      {LANGS.map((l) => (
         <Button
           key={l}
           size="sm"

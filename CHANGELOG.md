@@ -8,6 +8,10 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Traductions estonienne (et), allemande (de) et néerlandaise (nl)** ajoutées en plus du
+  français et de l'anglais. Le **sélecteur de langue** affiche désormais l'ensemble des langues
+  prises en charge et détecte la langue active de manière robuste (gestion des variantes
+  régionales type `en-US`).
 - **Navigation en cascade par sidebar** (Entreprise → Postes → Candidats) en remplacement
   de la navigation par étapes en haut de page. Une **sidebar latérale persistante** propose
   deux sections : **1 · Entreprise** et **2 · Postes** (la section Postes reste active sur les
