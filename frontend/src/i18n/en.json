@@ -105,6 +105,8 @@
     "error": "Error",
     "saved": "Saved ✓",
     "generated": "Generated ✓",
+    "yes": "Yes",
+    "no": "No",
     "aiDisabled": "AI is disabled: add OPENROUTER_API_KEY to .env."
   }
 }

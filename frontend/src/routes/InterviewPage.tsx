@@ -157,6 +157,16 @@ export function InterviewPage() {
                 </span>
               )}
             </p>
+            <p className="text-muted-foreground">
+              {candidate.statut_marital && (
+                <span>
+                  {t('candidate.statutMarital')}: {candidate.statut_marital}
+                </span>
+              )}
+              {candidate.statut_marital && ' · '}
+              {t('candidate.statutEtudiant')}:{' '}
+              {candidate.statut_etudiant ? t('common.yes') : t('common.no')}
+            </p>
             {candidate.profile_summary && (
               <Markdown className="text-muted-foreground">
                 {candidate.profile_summary}

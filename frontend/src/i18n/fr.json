@@ -105,6 +105,8 @@
     "error": "Erreur",
     "saved": "Enregistré ✓",
     "generated": "Généré ✓",
+    "yes": "Oui",
+    "no": "Non",
     "aiDisabled": "L'IA est désactivée : ajoutez OPENROUTER_API_KEY dans .env."
   }
 }

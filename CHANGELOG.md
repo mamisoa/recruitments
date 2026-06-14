@@ -8,6 +8,12 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- Rappel du **statut marital** et du **statut étudiant** du candidat dans la carte
+  « Faits sur le candidat » de la fiche d'entretien (en plus du nom, prénom et
+  âge déjà présents), ces informations étant utiles à la rédaction du contrat.
+  Ces statuts (ainsi que l'âge) sont désormais aussi transmis au contexte du
+  résumé d'entretien généré par l'IA.
+- Clés d'internationalisation `common.yes` et `common.no` (FR/EN).
 - Champ **« Spécificités du candidat »** dans la fiche d'entretien, placé sous
   « Attentes du candidat » : zone de texte libre (ex. *proche du centre ville*)
   pour des informations contextuelles. Persisté dans une nouvelle colonne

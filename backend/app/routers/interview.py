@@ -112,6 +112,13 @@ def _build_context(
             lines.append(f"Role:\n{position.job_presentation}")
     lines.append("\n# Candidate")
     lines.append(f"Name: {candidate.prenom} {candidate.nom}")
+    if candidate.age is not None:
+        lines.append(f"Age: {candidate.age}")
+    if candidate.statut_marital:
+        lines.append(f"Marital status: {candidate.statut_marital}")
+    lines.append(
+        f"Student status: {'yes' if candidate.statut_etudiant else 'no'}"
+    )
     if candidate.profile_summary:
         lines.append(f"Profile summary:\n{candidate.profile_summary}")
     lines.append("\n# Interview scores (0-10) and notes")
