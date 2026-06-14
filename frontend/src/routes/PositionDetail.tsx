@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { EditableMarkdown } from '@/components/EditableMarkdown'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
@@ -48,6 +49,17 @@ export function PositionDetail() {
         company_presentation: form.company_presentation,
         job_presentation: form.job_presentation,
       }),
+    onSuccess: (p) => {
+      setForm(p)
+      void queryClient.invalidateQueries({ queryKey: qk.position(id) })
+      void queryClient.invalidateQueries({ queryKey: qk.positions })
+      toast.success(t('common.saved'))
+    },
+    onError: (e: Error) => toast.error(e.message),
+  })
+
+  const savePresentation = useMutation({
+    mutationFn: (patch: Partial<Position>) => api.updatePosition(id, patch),
     onSuccess: (p) => {
       setForm(p)
       void queryClient.invalidateQueries({ queryKey: qk.position(id) })
@@ -148,24 +160,18 @@ export function PositionDetail() {
             {generate.isPending ? t('position.generating') : t('position.generate')}
           </Button>
 
-          <div className="space-y-1.5">
-            <Label>{t('position.companyPresentation')}</Label>
-            <Textarea
-              rows={6}
-              value={form.company_presentation ?? ''}
-              placeholder={t('position.presentationPlaceholder')}
-              onChange={(e) => set({ company_presentation: e.target.value })}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label>{t('position.jobPresentation')}</Label>
-            <Textarea
-              rows={6}
-              value={form.job_presentation ?? ''}
-              placeholder={t('position.presentationPlaceholder')}
-              onChange={(e) => set({ job_presentation: e.target.value })}
-            />
-          </div>
+          <EditableMarkdown
+            label={t('position.companyPresentation')}
+            value={form.company_presentation ?? ''}
+            placeholder={t('position.presentationPlaceholder')}
+            onSave={(v) => savePresentation.mutateAsync({ company_presentation: v })}
+          />
+          <EditableMarkdown
+            label={t('position.jobPresentation')}
+            value={form.job_presentation ?? ''}
+            placeholder={t('position.presentationPlaceholder')}
+            onSave={(v) => savePresentation.mutateAsync({ job_presentation: v })}
+          />
 
           <Button onClick={() => save.mutate()} disabled={save.isPending}>
             {t('position.save')}

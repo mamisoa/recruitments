@@ -101,6 +101,7 @@
   "common": {
     "back": "Back",
     "cancel": "Cancel",
+    "edit": "Edit",
     "loading": "Loading…",
     "error": "Error",
     "saved": "Saved ✓",

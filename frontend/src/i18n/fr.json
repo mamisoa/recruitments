@@ -101,6 +101,7 @@
   "common": {
     "back": "Retour",
     "cancel": "Annuler",
+    "edit": "Éditer",
     "loading": "Chargement…",
     "error": "Erreur",
     "saved": "Enregistré ✓",

@@ -40,3 +40,9 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 - Bascule **Aperçu / Modifier** sur le résumé d'entretien : affichage formaté
   par défaut, repassage au champ éditable à la demande.
 - Clés d'internationalisation `interview.edit` et `interview.preview` (FR/EN).
+- Affichage markdown des présentations de la fiche du poste : la présentation de
+  l'entreprise et la présentation du poste s'affichent désormais en HTML mis en
+  forme (lecture) au lieu d'une grande zone de texte. Un bouton **« Éditer »**
+  ouvre un modal pour modifier le texte brut et l'enregistrer immédiatement via
+  l'API, grâce à un nouveau composant réutilisable `EditableMarkdown`.
+- Clé d'internationalisation `common.edit` (FR/EN).
