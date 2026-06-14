@@ -125,7 +125,11 @@
     "selectToCompare": "Select to compare (max. 2)",
     "selectSecond": "Select a second candidate to compare.",
     "openInterview": "Interview",
-    "noInterview": "No interview recorded."
+    "noInterview": "No interview recorded.",
+    "weights": "Score weights",
+    "weightsHint": "Adjust how much each criterion counts in the global score. Saved per position.",
+    "saveWeights": "Save weights",
+    "resetWeights": "Reset"
   },
   "common": {
     "back": "Back",

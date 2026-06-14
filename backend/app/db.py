@@ -91,6 +91,10 @@ def _run_light_migrations() -> None:
         },
         "position": {
             "selection_criteria": "TEXT",
+            "score_weights": (
+                "JSON DEFAULT '{\"fluence\": 1, \"professionnalisme\": 1, "
+                '"competences": 1, "langues": 1, "custom": 1}\''
+            ),
         },
     }
     inspector = inspect(engine)

@@ -125,7 +125,11 @@
     "selectToCompare": "Zum Vergleichen auswählen (max. 2)",
     "selectSecond": "Wählen Sie einen zweiten Kandidaten zum Vergleichen.",
     "openInterview": "Interview",
-    "noInterview": "Kein Interview erfasst."
+    "noInterview": "Kein Interview erfasst.",
+    "weights": "Score-Gewichtung",
+    "weightsHint": "Legen Sie fest, wie stark jedes Kriterium in die Gesamtbewertung einfließt. Pro Stelle gespeichert.",
+    "saveWeights": "Gewichtung speichern",
+    "resetWeights": "Zurücksetzen"
   },
   "common": {
     "back": "Zurück",

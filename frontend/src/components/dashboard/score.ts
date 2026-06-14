@@ -1,5 +1,14 @@
-import type { Interview } from '@/lib/types'
+import type { Interview, ScoreWeights } from '@/lib/types'
 import { CRITERIA } from '@/components/interview/criteria'
+
+/** Neutral weights: every component counts equally. */
+export const DEFAULT_WEIGHTS: ScoreWeights = {
+  fluence: 1,
+  professionnalisme: 1,
+  competences: 1,
+  langues: 1,
+  custom: 1,
+}
 
 /** The four core criterion score values of an interview (null-safe). */
 export function coreScores(interview: Interview | null): (number | null)[] {
@@ -7,18 +16,43 @@ export function coreScores(interview: Interview | null): (number | null)[] {
   return CRITERIA.map((c) => interview[c.score] as number | null)
 }
 
+/** Mean of the candidate's filled custom-eval scores, or null if none. */
+function customMean(interview: Interview): number | null {
+  const vals = interview.custom_evaluations
+    .map((e) => e.score)
+    .filter((v): v is number => v != null)
+  if (vals.length === 0) return null
+  return vals.reduce((a, b) => a + b, 0) / vals.length
+}
+
 /**
- * Global score = mean of every filled 0-10 score: the 4 core criteria plus the
- * candidate's custom evaluations. Returns null when nothing has been scored.
+ * Global score = weighted mean of the 4 core criteria plus the custom-evals
+ * group (averaged first, then weighted once). Each weight only counts when its
+ * component is actually scored, so missing scores never penalise a candidate.
+ * Returns null when nothing scored (or all relevant weights are 0).
  */
-export function compositeScore(interview: Interview | null): number | null {
+export function compositeScore(
+  interview: Interview | null,
+  weights: ScoreWeights = DEFAULT_WEIGHTS,
+): number | null {
   if (!interview) return null
-  const values = [
-    ...coreScores(interview),
-    ...interview.custom_evaluations.map((e) => e.score),
-  ].filter((v): v is number => v != null)
-  if (values.length === 0) return null
-  return values.reduce((a, b) => a + b, 0) / values.length
+  let sum = 0
+  let wsum = 0
+  for (const c of CRITERIA) {
+    const value = interview[c.score] as number | null
+    if (value == null) continue
+    const w = weights[c.key] ?? 0
+    sum += w * value
+    wsum += w
+  }
+  const cm = customMean(interview)
+  if (cm != null) {
+    const w = weights.custom ?? 0
+    sum += w * cm
+    wsum += w
+  }
+  if (wsum === 0) return null
+  return sum / wsum
 }
 
 export type ScoreTone = 'high' | 'mid' | 'low' | 'none'

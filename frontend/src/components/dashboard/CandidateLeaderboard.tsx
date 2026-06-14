@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import type { CandidateScore } from '@/lib/types'
+import type { CandidateScore, ScoreWeights } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -38,10 +38,12 @@ function ScoreBar({ value, label }: { value: number | null; label: string }) {
  */
 export function CandidateLeaderboard({
   rows,
+  weights,
   selected,
   onToggle,
 }: {
   rows: CandidateScore[]
+  weights: ScoreWeights
   selected: number[]
   onToggle: (id: number) => void
 }) {
@@ -50,8 +52,8 @@ export function CandidateLeaderboard({
 
   // Sort by global score desc; candidates without scores fall to the bottom.
   const ranked = [...rows].sort((a, b) => {
-    const sa = compositeScore(a.interview)
-    const sb = compositeScore(b.interview)
+    const sa = compositeScore(a.interview, weights)
+    const sb = compositeScore(b.interview, weights)
     if (sa == null && sb == null) return 0
     if (sa == null) return 1
     if (sb == null) return -1
@@ -68,7 +70,7 @@ export function CandidateLeaderboard({
           <p className="text-sm text-muted-foreground">{t('dashboard.empty')}</p>
         )}
         {ranked.map((c, i) => {
-          const global = compositeScore(c.interview)
+          const global = compositeScore(c.interview, weights)
           const tone = scoreTone(global)
           const isSelected = selected.includes(c.id)
           const limitReached = selected.length >= 2 && !isSelected

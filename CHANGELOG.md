@@ -17,6 +17,14 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
   volet latéral gauche** (sidebar).
 
 ### Ajouté
+- **Pondérations du score global configurables par poste.** Le tableau de bord propose un
+  panneau de réglage (curseurs 0–3) pour ajuster l'importance de chacun des 4 critères et,
+  globalement, du groupe d'évaluations personnalisées. Le score global devient une **moyenne
+  pondérée** (un poids ne compte que si le critère est renseigné, donc un score manquant ne
+  pénalise pas) ; les évals perso sont d'abord moyennées puis pondérées une seule fois pour ne
+  pas avantager un candidat très évalué. Les poids sont **persistés sur la Position** (nouveau
+  champ `score_weights`, migration SQLite additive automatique) et le classement se recalcule en
+  direct pendant le réglage. Par défaut tous les poids valent 1 (comportement inchangé).
 - **Tableau de bord de résultats par poste** (`/positions/:id/dashboard`) pour comparer les
   candidats et faciliter la décision. Trois visualisations : (1) un **classement** trié sur un
   **score global** (moyenne des 4 critères + évaluations personnalisées) avec badge coloré

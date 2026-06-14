@@ -125,7 +125,11 @@
     "selectToCompare": "Sélectionner pour comparer (max. 2)",
     "selectSecond": "Sélectionnez un second candidat pour comparer.",
     "openInterview": "Entretien",
-    "noInterview": "Pas d'entretien renseigné."
+    "noInterview": "Pas d'entretien renseigné.",
+    "weights": "Pondérations du score",
+    "weightsHint": "Ajustez l'importance de chaque critère dans le score global. Réglages enregistrés par poste.",
+    "saveWeights": "Enregistrer les pondérations",
+    "resetWeights": "Réinitialiser"
   },
   "common": {
     "back": "Retour",

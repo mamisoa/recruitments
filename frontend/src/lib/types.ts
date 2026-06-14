@@ -9,6 +9,14 @@ export interface Company {
   updated_at: string
 }
 
+export interface ScoreWeights {
+  fluence: number
+  professionnalisme: number
+  competences: number
+  langues: number
+  custom: number
+}
+
 export interface Position {
   id: number
   title: string
@@ -16,6 +24,7 @@ export interface Position {
   job_is_url: boolean
   job_presentation: string | null
   selection_criteria: string | null
+  score_weights: ScoreWeights
   ai_model: string | null
   generated_at: string | null
   created_at: string

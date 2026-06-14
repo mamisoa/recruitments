@@ -125,7 +125,11 @@
     "selectToCompare": "Selecteer om te vergelijken (max. 2)",
     "selectSecond": "Selecteer een tweede kandidaat om te vergelijken.",
     "openInterview": "Interview",
-    "noInterview": "Geen interview vastgelegd."
+    "noInterview": "Geen interview vastgelegd.",
+    "weights": "Scoreweging",
+    "weightsHint": "Bepaal hoe zwaar elk criterium meetelt in de totaalscore. Per functie opgeslagen.",
+    "saveWeights": "Weging opslaan",
+    "resetWeights": "Resetten"
   },
   "common": {
     "back": "Terug",

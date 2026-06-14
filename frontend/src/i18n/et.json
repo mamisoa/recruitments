@@ -125,7 +125,11 @@
     "selectToCompare": "Vali võrdlemiseks (max 2)",
     "selectSecond": "Vali võrdlemiseks teine kandidaat.",
     "openInterview": "Intervjuu",
-    "noInterview": "Intervjuud pole salvestatud."
+    "noInterview": "Intervjuud pole salvestatud.",
+    "weights": "Skoori kaalud",
+    "weightsHint": "Reguleeri, kui palju iga kriteerium üldskoori mõjutab. Salvestatakse ametikoha kohta.",
+    "saveWeights": "Salvesta kaalud",
+    "resetWeights": "Lähtesta"
   },
   "common": {
     "back": "Tagasi",

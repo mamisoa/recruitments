@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import type { CandidateScore } from '@/lib/types'
+import type { CandidateScore, ScoreWeights } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Markdown } from '@/components/Markdown'
@@ -29,9 +29,17 @@ function fullName(c: CandidateScore) {
 }
 
 /** One candidate's detail column: global badge, custom evals, notes, summary. */
-function DetailColumn({ c, color }: { c: CandidateScore; color: string }) {
+function DetailColumn({
+  c,
+  color,
+  weights,
+}: {
+  c: CandidateScore
+  color: string
+  weights: ScoreWeights
+}) {
   const { t } = useTranslation()
-  const global = compositeScore(c.interview)
+  const global = compositeScore(c.interview, weights)
   return (
     <div className="flex-1 space-y-3">
       <div className="flex items-center gap-2">
@@ -73,7 +81,15 @@ function DetailColumn({ c, color }: { c: CandidateScore; color: string }) {
 }
 
 /** Side-by-side comparison of two candidates (marker 3). */
-export function ComparisonPanel({ a, b }: { a: CandidateScore; b: CandidateScore }) {
+export function ComparisonPanel({
+  a,
+  b,
+  weights,
+}: {
+  a: CandidateScore
+  b: CandidateScore
+  weights: ScoreWeights
+}) {
   const { t } = useTranslation()
 
   const series = [
@@ -128,8 +144,8 @@ export function ComparisonPanel({ a, b }: { a: CandidateScore; b: CandidateScore
         </div>
 
         <div className="flex flex-col gap-6 border-t pt-4 md:flex-row">
-          <DetailColumn c={a} color={SERIES_COLORS[0]} />
-          <DetailColumn c={b} color={SERIES_COLORS[1]} />
+          <DetailColumn c={a} color={SERIES_COLORS[0]} weights={weights} />
+          <DetailColumn c={b} color={SERIES_COLORS[1]} weights={weights} />
         </div>
       </CardContent>
     </Card>
