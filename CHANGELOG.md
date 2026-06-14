@@ -7,7 +7,19 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Modifié
+- Le **résumé d'entretien** généré par l'IA est désormais rédigé dans la langue de
+  l'interface : français si l'UI est en français, anglais sinon (auparavant toujours
+  en anglais). La langue courante est transmise au backend via un paramètre `lang`
+  sur `POST /candidates/{id}/interview/summary/generate`, qui ajoute une consigne de
+  langue au prompt.
+
 ### Corrigé
+- Erreur 500 à la génération du résumé d'entretien
+  (`POST /candidates/{id}/interview/summary/generate`) : le contexte IA lisait
+  `candidate.age`, un champ calculé qui n'existe que sur le schéma de lecture, pas
+  sur le modèle `Candidate` en base. L'âge est désormais calculé via `compute_age`
+  à partir de `ddn`.
 - Les modales d'édition markdown (`EditableMarkdown` : résumé du candidat,
   présentations et critères de sélection du poste) ne dépassent plus la hauteur
   de l'écran lorsque le texte est long. La modale est désormais bornée à la

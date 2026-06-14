@@ -60,6 +60,15 @@ _INTERVIEW_SP = (
 )
 
 
+_LANGUAGE_NAMES = {"fr": "French", "en": "English"}
+
+
+def _language_directive(lang: str | None) -> str:
+    """Map a UI locale (e.g. 'fr', 'en-US') to a 'write in <language>' instruction."""
+    name = _LANGUAGE_NAMES.get((lang or "").lower()[:2], "English")
+    return f"Write the entire response in {name}."
+
+
 def _doc_parts(docs: list[tuple[bytes, str]]) -> list[DocPart]:
     """Turn (bytes, content_type) tuples into prompt parts."""
     parts: list[DocPart] = []
@@ -111,8 +120,10 @@ async def generate_profile_summary(docs: list[tuple[bytes, str]]) -> str:
     return result.output
 
 
-async def generate_interview_summary(context: str) -> str:
-    result = await _summarizer(_INTERVIEW_SP).run(context)
+async def generate_interview_summary(context: str, lang: str | None = None) -> str:
+    result = await _summarizer(_INTERVIEW_SP).run(
+        f"{context}\n\n{_language_directive(lang)}"
+    )
     return result.output
 
 

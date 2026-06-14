@@ -32,7 +32,7 @@ type State = Partial<Interview>
 export function InterviewPage() {
   const { candidateId } = useParams()
   const id = Number(candidateId)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const { data: sheet, isLoading } = useInterviewSheet(id)
   const { data: health } = useHealth()
@@ -84,7 +84,7 @@ export function InterviewPage() {
   const generate = useMutation({
     mutationFn: async () => {
       await save.mutateAsync()
-      return api.generateInterviewSummary(id)
+      return api.generateInterviewSummary(id, i18n.language)
     },
     onSuccess: (iv) => {
       set({ interview_summary: iv.interview_summary })

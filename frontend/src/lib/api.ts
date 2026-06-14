@@ -92,7 +92,8 @@ export const saveInterview = (candidateId: number, data: Partial<Interview>) =>
     method: 'PUT',
     ...json(data),
   })
-export const generateInterviewSummary = (candidateId: number) =>
-  request<Interview>(`/candidates/${candidateId}/interview/summary/generate`, {
-    method: 'POST',
-  })
+export const generateInterviewSummary = (candidateId: number, lang: string) =>
+  request<Interview>(
+    `/candidates/${candidateId}/interview/summary/generate?lang=${encodeURIComponent(lang)}`,
+    { method: 'POST' },
+  )

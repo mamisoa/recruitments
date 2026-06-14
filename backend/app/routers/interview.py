@@ -12,6 +12,7 @@ from app.models import (
     InterviewRead,
     InterviewUpdate,
     Position,
+    compute_age,
     utcnow,
 )
 
@@ -62,7 +63,7 @@ def save_interview(
     response_model=InterviewRead,
 )
 async def generate_interview_summary(
-    candidate_id: int, session: SessionDep
+    candidate_id: int, session: SessionDep, lang: str = "en"
 ) -> Interview:
     candidate = _candidate_or_404(session, candidate_id)
     interview = _get_or_create_interview(session, candidate)
@@ -70,7 +71,7 @@ async def generate_interview_summary(
 
     context = _build_context(position, candidate, interview)
     try:
-        summary = await agents.generate_interview_summary(context)
+        summary = await agents.generate_interview_summary(context, lang)
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
@@ -114,8 +115,9 @@ def _build_context(
             lines.append(f"Selection criteria:\n{position.selection_criteria}")
     lines.append("\n# Candidate")
     lines.append(f"Name: {candidate.prenom} {candidate.nom}")
-    if candidate.age is not None:
-        lines.append(f"Age: {candidate.age}")
+    age = compute_age(candidate.ddn)
+    if age is not None:
+        lines.append(f"Age: {age}")
     if candidate.statut_marital:
         lines.append(f"Marital status: {candidate.statut_marital}")
     lines.append(
