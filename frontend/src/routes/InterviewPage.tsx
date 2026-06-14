@@ -13,6 +13,12 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Markdown } from '@/components/Markdown'
 
 type ScoreKey = 'fluence' | 'professionnalisme' | 'competences' | 'langues'
@@ -39,6 +45,7 @@ export function InterviewPage() {
 
   const [state, setState] = useState<State>({})
   const [editingSummary, setEditingSummary] = useState(false)
+  const [promptOpen, setPromptOpen] = useState(false)
   useEffect(() => {
     if (sheet) setState(sheet.interview ?? {})
   }, [sheet])
@@ -91,6 +98,12 @@ export function InterviewPage() {
       void queryClient.invalidateQueries({ queryKey: qk.sheet(id) })
       toast.success(t('common.generated'))
     },
+    onError: (e: Error) => toast.error(e.message),
+  })
+
+  const viewPrompt = useMutation({
+    mutationFn: () => api.getInterviewPrompt(id, i18n.language),
+    onSuccess: () => setPromptOpen(true),
     onError: (e: Error) => toast.error(e.message),
   })
 
@@ -299,6 +312,14 @@ export function InterviewPage() {
           <CardTitle className="flex items-center justify-between">
             {t('interview.summary')}
             <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => viewPrompt.mutate()}
+                disabled={viewPrompt.isPending}
+              >
+                {t('interview.viewPrompt')}
+              </Button>
               {hasSummary && (
                 <Button
                   variant="outline"
@@ -334,6 +355,17 @@ export function InterviewPage() {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={promptOpen} onOpenChange={setPromptOpen}>
+        <DialogContent className="flex max-h-[calc(100dvh-2rem)] flex-col sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{t('interview.promptTitle')}</DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 overflow-y-auto">
+            <Markdown>{viewPrompt.data?.prompt ?? ''}</Markdown>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

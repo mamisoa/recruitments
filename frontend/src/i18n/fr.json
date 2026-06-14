@@ -97,6 +97,8 @@
     "summary": "Résumé d'entretien",
     "edit": "Modifier",
     "preview": "Aperçu",
+    "viewPrompt": "Voir le prompt",
+    "promptTitle": "Prompt envoyé à l'IA",
     "summaryPlaceholder": "Le résumé généré apparaîtra ici et reste modifiable."
   },
   "common": {

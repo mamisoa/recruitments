@@ -97,3 +97,7 @@ export const generateInterviewSummary = (candidateId: number, lang: string) =>
     `/candidates/${candidateId}/interview/summary/generate?lang=${encodeURIComponent(lang)}`,
     { method: 'POST' },
   )
+export const getInterviewPrompt = (candidateId: number, lang: string) =>
+  request<{ prompt: string }>(
+    `/candidates/${candidateId}/interview/summary/prompt?lang=${encodeURIComponent(lang)}`,
+  )

@@ -7,7 +7,19 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- Bouton **« Voir le prompt »** sur la carte du résumé d'entretien : il affiche, dans
+  une modale en lecture seule et rendu en markdown, le prompt complet (prompt système
+  + message utilisateur) reconstruit à partir des données enregistrées — soit ce qui
+  sera envoyé à l'IA lors du prochain **Régénérer**. Nouvel endpoint en lecture seule
+  `GET /candidates/{id}/interview/summary/prompt` (paramètre `lang`).
+
 ### Modifié
+- Le **résumé d'entretien** généré par l'IA s'appuie désormais explicitement sur les
+  **critères de sélection** du poste : lorsque la position en définit, le prompt
+  demande une section dédiée évaluant le candidat critère par critère, suivie d'une
+  recommandation globale (avis go / no-go nuancé). Les critères étaient déjà transmis
+  au contexte ; c'est l'instruction d'en faire une évaluation argumentée qui est ajoutée.
 - Le **résumé d'entretien** généré par l'IA est désormais rédigé dans la langue de
   l'interface : français si l'UI est en français, anglais sinon (auparavant toujours
   en anglais). La langue courante est transmise au backend via un paramètre `lang`

@@ -85,6 +85,21 @@ async def generate_interview_summary(
     return interview
 
 
+@router.get("/candidates/{candidate_id}/interview/summary/prompt")
+def get_interview_summary_prompt(
+    candidate_id: int, session: SessionDep, lang: str = "en"
+) -> dict[str, str]:
+    """Rebuild the summary prompt from the saved data (what the next generation sends).
+
+    Read-only and independent of the AI provider: it only assembles text.
+    """
+    candidate = _candidate_or_404(session, candidate_id)
+    interview = _get_or_create_interview(session, candidate)
+    position = session.get(Position, candidate.position_id)
+    context = _build_context(position, candidate, interview)
+    return {"prompt": agents.compose_interview_prompt(context, lang)}
+
+
 def _eval_field(evaluation: object, name: str) -> object:
     """Read a field from a custom evaluation, tolerating dict or model shape.
 
@@ -146,7 +161,14 @@ def _build_context(
         lines.append(f"\n# Candidate expectations\n{interview.attentes_candidat}")
     if interview.specificites_candidat:
         lines.append(f"\n# Candidate specificities\n{interview.specificites_candidat}")
-    lines.append(
-        "\nWrite the interview summary now, ending with a short overall recommendation."
-    )
+    if position and position.selection_criteria:
+        lines.append(
+            "\nWrite the interview summary now. End with a section that assesses the "
+            "candidate against each selection criterion, followed by a short overall "
+            "recommendation."
+        )
+    else:
+        lines.append(
+            "\nWrite the interview summary now, ending with a short overall recommendation."
+        )
     return "\n".join(lines)

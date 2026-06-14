@@ -52,12 +52,17 @@ _PROFILE_SP = (
     "their CV(s), for a recruiter to use before an interview. Cover experience, key "
     "skills, education, and notable strengths. Do not invent anything not in the CVs."
 )
-_INTERVIEW_SP = (
+INTERVIEW_SYSTEM_PROMPT = (
     "You write a balanced interview summary for a recruiter's records. Synthesize the "
     "company/role context, the candidate profile, the recruiter's per-criterion scores "
-    "(0-10) and notes, and the candidate's expectations into a clear assessment with a "
-    "short overall recommendation. Be factual and base everything on the input given."
+    "(0-10) and notes, and the candidate's expectations into a clear assessment. When the "
+    "position lists selection criteria, give your opinion by explicitly assessing the "
+    "candidate against them: add a dedicated section that reviews each selection criterion "
+    "in turn (how well the candidate meets it, based on the evidence). End with a short "
+    "overall recommendation (a nuanced go / no-go). Be factual and base everything on the "
+    "input given."
 )
+_INTERVIEW_SP = INTERVIEW_SYSTEM_PROMPT
 
 
 _LANGUAGE_NAMES = {"fr": "French", "en": "English"}
@@ -125,6 +130,20 @@ async def generate_interview_summary(context: str, lang: str | None = None) -> s
         f"{context}\n\n{_language_directive(lang)}"
     )
     return result.output
+
+
+def compose_interview_prompt(context: str, lang: str | None = None) -> str:
+    """Markdown text of the full interview-summary prompt, for display.
+
+    Mirrors what ``generate_interview_summary`` sends: the system prompt (set on the
+    agent) plus the user message (``context`` + the language directive). Built here so
+    the UI can show exactly what will be sent on the next generation.
+    """
+    user_message = f"{context}\n\n{_language_directive(lang)}"
+    return (
+        f"# System prompt\n\n{INTERVIEW_SYSTEM_PROMPT}\n\n"
+        f"# User message\n\n{user_message}"
+    )
 
 
 def ai_model_name() -> str:

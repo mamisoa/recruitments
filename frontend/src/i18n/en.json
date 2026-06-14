@@ -97,6 +97,8 @@
     "summary": "Interview summary",
     "edit": "Edit",
     "preview": "Preview",
+    "viewPrompt": "View prompt",
+    "promptTitle": "Prompt sent to the AI",
     "summaryPlaceholder": "Generated summary appears here and stays editable."
   },
   "common": {
