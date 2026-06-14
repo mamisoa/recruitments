@@ -42,7 +42,7 @@ def update_company(payload: CompanyUpdate, session: SessionDep) -> Company:
 
 
 @router.post("/generate", response_model=CompanyRead)
-async def generate_presentation(session: SessionDep) -> Company:
+async def generate_presentation(session: SessionDep, lang: str = "en") -> Company:
     """Scrape the company URL and AI-generate the company presentation."""
     company = _get_or_create(session)
 
@@ -55,7 +55,7 @@ async def generate_presentation(session: SessionDep) -> Company:
     try:
         company_text = await fetch_clean_text(company.company_url)
         company.company_presentation = await agents.generate_company_presentation(
-            company_text
+            company_text, lang
         )
     except httpx.HTTPError as exc:
         raise HTTPException(status_code=502, detail=f"Failed to fetch URL: {exc}") from exc

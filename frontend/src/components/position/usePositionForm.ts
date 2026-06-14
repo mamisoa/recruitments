@@ -8,7 +8,7 @@ import { qk } from '@/lib/queries'
 
 /** Form state + mutations backing the position detail page. */
 export function usePositionForm(id: number, position: Position | undefined) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
 
   // Sync server data into the editable form when it (re)loads. Done during
@@ -61,7 +61,7 @@ export function usePositionForm(id: number, position: Position | undefined) {
         job_source: form.job_source,
         job_is_url: form.job_is_url,
       })
-      return api.generatePresentations(id)
+      return api.generatePresentations(id, i18n.language)
     },
     onSuccess: (p) => {
       setForm(p)

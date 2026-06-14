@@ -200,11 +200,13 @@ async def extract_identifiers(
 @router.post(
     "/candidates/{candidate_id}/summary/generate", response_model=CandidateDetailRead
 )
-async def generate_summary(candidate_id: int, session: SessionDep) -> Candidate:
+async def generate_summary(
+    candidate_id: int, session: SessionDep, lang: str = "en"
+) -> Candidate:
     candidate = _candidate_or_404(session, candidate_id)
     docs = _load_cv_docs(candidate)
     try:
-        summary = await agents.generate_profile_summary(docs)
+        summary = await agents.generate_profile_summary(docs, lang)
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     candidate.profile_summary = summary

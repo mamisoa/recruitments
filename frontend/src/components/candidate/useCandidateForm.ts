@@ -11,7 +11,7 @@ import { schema, type FormValues, IDENTIFIER_FIELDS } from './schema'
 
 /** Form state + mutations backing the candidate detail page. */
 export function useCandidateForm(id: number, candidate: CandidateDetail | undefined) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const [proposed, setProposed] = useState<CandidateIdentifiers | null>(null)
 
@@ -94,7 +94,7 @@ export function useCandidateForm(id: number, candidate: CandidateDetail | undefi
   })
 
   const genSummary = useMutation({
-    mutationFn: () => api.generateProfileSummary(id),
+    mutationFn: () => api.generateProfileSummary(id, i18n.language),
     onSuccess: (c) => {
       setValue('profile_summary', c.profile_summary ?? '', { shouldDirty: true })
       refresh()

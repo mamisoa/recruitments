@@ -8,6 +8,16 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Modifié
+- **Tous les textes générés par l'IA suivent désormais la langue d'affichage, dans les cinq
+  langues de l'interface (FR/EN/ET/DE/NL).** Jusqu'ici le dictionnaire `_LANGUAGE_NAMES`
+  (`backend/app/ai/agents.py`) ne mappait que `fr`/`en`, si bien que les sorties en
+  estonien, allemand et néerlandais retombaient sur l'anglais ; les trois langues manquantes
+  ont été ajoutées. La directive de langue est en outre branchée sur **tous** les
+  générateurs, pas seulement le résumé d'entretien : `generate_company_presentation`,
+  `generate_job_presentation` et `generate_profile_summary` acceptent un paramètre `lang`.
+  Les endpoints correspondants (`company.generate_presentation`, `positions.generate_presentations`,
+  `candidates.generate_summary`) prennent un query param `lang` (défaut `en`), et le frontend
+  envoie `i18n.language` (`api.ts` + `CompanyPage.tsx`, `usePositionForm.ts`, `useCandidateForm.ts`).
 - **`README.md` mis à jour** pour refléter l'ensemble des changements : entité Entreprise
   singleton et navigation en cascade, critères de sélection et évaluations personnalisées,
   champs « Spécificités du candidat », rendu/édition markdown, résumé d'entretien dans la

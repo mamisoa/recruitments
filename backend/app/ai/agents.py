@@ -65,7 +65,13 @@ INTERVIEW_SYSTEM_PROMPT = (
 _INTERVIEW_SP = INTERVIEW_SYSTEM_PROMPT
 
 
-_LANGUAGE_NAMES = {"fr": "French", "en": "English"}
+_LANGUAGE_NAMES = {
+    "fr": "French",
+    "en": "English",
+    "et": "Estonian",
+    "de": "German",
+    "nl": "Dutch",
+}
 
 
 def _language_directive(lang: str | None) -> str:
@@ -91,16 +97,20 @@ def _doc_parts(docs: list[tuple[bytes, str]]) -> list[DocPart]:
 # --------------------------------------------------------------------------- #
 # Public functions used by the routers
 # --------------------------------------------------------------------------- #
-async def generate_company_presentation(company_text: str) -> str:
+async def generate_company_presentation(
+    company_text: str, lang: str | None = None
+) -> str:
     result = await _summarizer(_COMPANY_SP).run(
         f"Write a company presentation based on this source material:\n\n{company_text}"
+        f"\n\n{_language_directive(lang)}"
     )
     return result.output
 
 
-async def generate_job_presentation(job_text: str) -> str:
+async def generate_job_presentation(job_text: str, lang: str | None = None) -> str:
     result = await _summarizer(_JOB_SP).run(
         f"Write a job/role presentation based on this job description:\n\n{job_text}"
+        f"\n\n{_language_directive(lang)}"
     )
     return result.output
 
@@ -116,11 +126,14 @@ async def extract_candidate_identifiers(
     return result.output
 
 
-async def generate_profile_summary(docs: list[tuple[bytes, str]]) -> str:
+async def generate_profile_summary(
+    docs: list[tuple[bytes, str]], lang: str | None = None
+) -> str:
     prompt: list[DocPart] = [
         "Summarize the candidate's professional profile from the following CV(s)."
     ]
     prompt.extend(_doc_parts(docs))
+    prompt.append(_language_directive(lang))
     result = await _summarizer(_PROFILE_SP).run(prompt)
     return result.output
 

@@ -52,8 +52,10 @@ export const getHealth = () =>
 export const getCompany = () => request<Company>('/company')
 export const updateCompany = (data: Partial<Company>) =>
   request<Company>('/company', { method: 'PUT', ...json(data) })
-export const generateCompany = () =>
-  request<Company>('/company/generate', { method: 'POST' })
+export const generateCompany = (lang: string) =>
+  request<Company>(`/company/generate?lang=${encodeURIComponent(lang)}`, {
+    method: 'POST',
+  })
 
 // --- Positions ------------------------------------------------------------- //
 export const listPositions = () => request<PositionWithCounts[]>('/positions')
@@ -62,8 +64,11 @@ export const createPosition = (data: Partial<Position>) =>
   request<Position>('/positions', { method: 'POST', ...json(data) })
 export const updatePosition = (id: number, data: Partial<Position>) =>
   request<Position>(`/positions/${id}`, { method: 'PUT', ...json(data) })
-export const generatePresentations = (id: number) =>
-  request<Position>(`/positions/${id}/generate`, { method: 'POST' })
+export const generatePresentations = (id: number, lang: string) =>
+  request<Position>(
+    `/positions/${id}/generate?lang=${encodeURIComponent(lang)}`,
+    { method: 'POST' },
+  )
 
 // --- Candidates ------------------------------------------------------------ //
 export const listCandidates = (positionId: number) =>
@@ -94,8 +99,11 @@ export const deleteCv = (candidateId: number, cvId: number) =>
 
 export const extractIdentifiers = (id: number) =>
   request<CandidateIdentifiers>(`/candidates/${id}/extract`, { method: 'POST' })
-export const generateProfileSummary = (id: number) =>
-  request<CandidateDetail>(`/candidates/${id}/summary/generate`, { method: 'POST' })
+export const generateProfileSummary = (id: number, lang: string) =>
+  request<CandidateDetail>(
+    `/candidates/${id}/summary/generate?lang=${encodeURIComponent(lang)}`,
+    { method: 'POST' },
+  )
 
 // --- Interview ------------------------------------------------------------- //
 export const saveInterview = (candidateId: number, data: Partial<Interview>) =>

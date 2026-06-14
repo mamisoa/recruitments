@@ -12,7 +12,7 @@ import { EditableMarkdown } from '@/components/EditableMarkdown'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export function CompanyPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const { data: company, isLoading } = useCompany()
   const { data: health } = useHealth()
@@ -42,7 +42,7 @@ export function CompanyPage() {
     mutationFn: async () => {
       // Persist current inputs before generating so the backend uses them.
       await api.updateCompany({ name: form.name, company_url: form.company_url })
-      return api.generateCompany()
+      return api.generateCompany(i18n.language)
     },
     onSuccess: (c) => {
       setForm(c)
