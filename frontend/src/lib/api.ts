@@ -2,6 +2,7 @@ import type {
   Candidate,
   CandidateDetail,
   CandidateIdentifiers,
+  CandidateScore,
   Company,
   CvFile,
   Interview,
@@ -67,6 +68,8 @@ export const generatePresentations = (id: number) =>
 // --- Candidates ------------------------------------------------------------ //
 export const listCandidates = (positionId: number) =>
   request<Candidate[]>(`/positions/${positionId}/candidates`)
+export const listCandidateScores = (positionId: number) =>
+  request<CandidateScore[]>(`/positions/${positionId}/candidates/scores`)
 export const getCandidate = (id: number) =>
   request<CandidateDetail>(`/candidates/${id}`)
 export const getInterviewSheet = (id: number) =>

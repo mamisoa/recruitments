@@ -114,6 +114,19 @@
     "promptTitle": "Prompt envoyé à l'IA",
     "summaryPlaceholder": "Le résumé généré apparaîtra ici et reste modifiable."
   },
+  "dashboard": {
+    "heading": "Tableau de bord",
+    "open": "Tableau de bord",
+    "ranking": "Classement des candidats",
+    "empty": "Aucun candidat à comparer.",
+    "comparison": "Comparaison côte à côte",
+    "radar": "Profil radar",
+    "byCriterion": "Par critère",
+    "selectToCompare": "Sélectionner pour comparer (max. 2)",
+    "selectSecond": "Sélectionnez un second candidat pour comparer.",
+    "openInterview": "Entretien",
+    "noInterview": "Pas d'entretien renseigné."
+  },
   "common": {
     "back": "Retour",
     "cancel": "Annuler",

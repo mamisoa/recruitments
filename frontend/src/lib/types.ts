@@ -59,6 +59,10 @@ export interface CandidateDetail extends Candidate {
   interview: Interview | null
 }
 
+export interface CandidateScore extends Candidate {
+  interview: Interview | null
+}
+
 export interface CandidateIdentifiers {
   nom: string | null
   prenom: string | null

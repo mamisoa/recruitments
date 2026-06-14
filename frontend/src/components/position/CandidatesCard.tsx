@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { BarChart3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -47,46 +48,58 @@ export function CandidatesCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle className="flex items-center justify-between gap-2">
           {t('position.candidatesHeading')}
-          <Dialog open={candOpen} onOpenChange={setCandOpen}>
-            <DialogTrigger
-              render={<Button size="sm">{t('position.addCandidate')}</Button>}
-            />
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{t('position.addCandidate')}</DialogTitle>
-              </DialogHeader>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label>{t('candidate.prenom')}</Label>
-                  <Input
-                    value={candName.prenom}
-                    onChange={(e) =>
-                      setCandName((n) => ({ ...n, prenom: e.target.value }))
-                    }
-                  />
+          <div className="flex items-center gap-2">
+            {candidates && candidates.length > 0 && (
+              <Button
+                size="sm"
+                variant="outline"
+                render={<Link to={`/positions/${positionId}/dashboard`} />}
+              >
+                <BarChart3 className="size-4" />
+                {t('dashboard.open')}
+              </Button>
+            )}
+            <Dialog open={candOpen} onOpenChange={setCandOpen}>
+              <DialogTrigger
+                render={<Button size="sm">{t('position.addCandidate')}</Button>}
+              />
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('position.addCandidate')}</DialogTitle>
+                </DialogHeader>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label>{t('candidate.prenom')}</Label>
+                    <Input
+                      value={candName.prenom}
+                      onChange={(e) =>
+                        setCandName((n) => ({ ...n, prenom: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>{t('candidate.nom')}</Label>
+                    <Input
+                      value={candName.nom}
+                      onChange={(e) =>
+                        setCandName((n) => ({ ...n, nom: e.target.value }))
+                      }
+                    />
+                  </div>
                 </div>
-                <div className="space-y-1.5">
-                  <Label>{t('candidate.nom')}</Label>
-                  <Input
-                    value={candName.nom}
-                    onChange={(e) =>
-                      setCandName((n) => ({ ...n, nom: e.target.value }))
-                    }
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  onClick={() => createCandidate.mutate()}
-                  disabled={createCandidate.isPending}
-                >
-                  {t('position.addCandidate')}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+                <DialogFooter>
+                  <Button
+                    onClick={() => createCandidate.mutate()}
+                    disabled={createCandidate.isPending}
+                  >
+                    {t('position.addCandidate')}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">

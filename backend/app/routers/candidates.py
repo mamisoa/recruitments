@@ -13,6 +13,7 @@ from app.models import (
     CandidateCreate,
     CandidateDetailRead,
     CandidateRead,
+    CandidateScoresRead,
     CandidateUpdate,
     CvFile,
     CvFileRead,
@@ -53,6 +54,21 @@ def list_candidates(position_id: int, session: SessionDep) -> list[Candidate]:
         select(Candidate)
         .where(Candidate.position_id == position_id)
         .order_by(Candidate.updated_at.desc())
+    ).all()
+
+
+@router.get(
+    "/positions/{position_id}/candidates/scores",
+    response_model=list[CandidateScoresRead],
+)
+def list_candidate_scores(position_id: int, session: SessionDep) -> list[Candidate]:
+    """Candidates of a position with their interview scores, for the dashboard."""
+    if session.get(Position, position_id) is None:
+        raise HTTPException(status_code=404, detail="Position not found")
+    return session.exec(
+        select(Candidate)
+        .where(Candidate.position_id == position_id)
+        .order_by(Candidate.created_at.asc())
     ).all()
 
 

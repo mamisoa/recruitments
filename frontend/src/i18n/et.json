@@ -114,6 +114,19 @@
     "promptTitle": "Tehisintellektile saadetud viip",
     "summaryPlaceholder": "Loodud kokkuvõte ilmub siia ja jääb muudetavaks."
   },
+  "dashboard": {
+    "heading": "Töölaud",
+    "open": "Töölaud",
+    "ranking": "Kandidaatide edetabel",
+    "empty": "Pole kandidaate võrdlemiseks.",
+    "comparison": "Kõrvuti võrdlus",
+    "radar": "Radarprofiil",
+    "byCriterion": "Kriteeriumi järgi",
+    "selectToCompare": "Vali võrdlemiseks (max 2)",
+    "selectSecond": "Vali võrdlemiseks teine kandidaat.",
+    "openInterview": "Intervjuu",
+    "noInterview": "Intervjuud pole salvestatud."
+  },
   "common": {
     "back": "Tagasi",
     "cancel": "Tühista",

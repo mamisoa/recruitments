@@ -13,6 +13,15 @@ class CandidateDetailRead(CandidateRead):
     interview: InterviewRead | None = None
 
 
+class CandidateScoresRead(CandidateRead):
+    """Candidate plus its interview scores, for the results dashboard.
+
+    Lighter than CandidateDetailRead: no CV files (unused when comparing scores).
+    """
+
+    interview: InterviewRead | None = None
+
+
 class InterviewSheetRead(SQLModel):
     """Everything the final interview sheet needs in one payload."""
 

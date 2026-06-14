@@ -36,7 +36,7 @@ from .interview import (
     InterviewRead,
     InterviewUpdate,
 )
-from .aggregates import CandidateDetailRead, InterviewSheetRead
+from .aggregates import CandidateDetailRead, CandidateScoresRead, InterviewSheetRead
 
 __all__ = [
     "ISIKUKOOD_RE",
@@ -65,5 +65,6 @@ __all__ = [
     "InterviewRead",
     "InterviewUpdate",
     "CandidateDetailRead",
+    "CandidateScoresRead",
     "InterviewSheetRead",
 ]

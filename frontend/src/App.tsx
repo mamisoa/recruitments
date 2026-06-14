@@ -5,6 +5,7 @@ import { PositionList } from '@/routes/PositionList'
 import { PositionDetail } from '@/routes/PositionDetail'
 import { CandidatePage } from '@/routes/CandidatePage'
 import { InterviewPage } from '@/routes/InterviewPage'
+import { DashboardPage } from '@/routes/DashboardPage'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="company" element={<CompanyPage />} />
         <Route path="positions" element={<PositionList />} />
         <Route path="positions/:positionId" element={<PositionDetail />} />
+        <Route path="positions/:positionId/dashboard" element={<DashboardPage />} />
         <Route path="candidates/:candidateId" element={<CandidatePage />} />
         <Route path="candidates/:candidateId/interview" element={<InterviewPage />} />
       </Route>

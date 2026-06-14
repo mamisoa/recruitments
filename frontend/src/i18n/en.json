@@ -114,6 +114,19 @@
     "promptTitle": "Prompt sent to the AI",
     "summaryPlaceholder": "Generated summary appears here and stays editable."
   },
+  "dashboard": {
+    "heading": "Dashboard",
+    "open": "Dashboard",
+    "ranking": "Candidate ranking",
+    "empty": "No candidates to compare.",
+    "comparison": "Side-by-side comparison",
+    "radar": "Radar profile",
+    "byCriterion": "By criterion",
+    "selectToCompare": "Select to compare (max. 2)",
+    "selectSecond": "Select a second candidate to compare.",
+    "openInterview": "Interview",
+    "noInterview": "No interview recorded."
+  },
   "common": {
     "back": "Back",
     "cancel": "Cancel",

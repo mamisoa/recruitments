@@ -114,6 +114,19 @@
     "promptTitle": "Prompt verzonden naar de AI",
     "summaryPlaceholder": "De gegenereerde samenvatting verschijnt hier en blijft bewerkbaar."
   },
+  "dashboard": {
+    "heading": "Dashboard",
+    "open": "Dashboard",
+    "ranking": "Kandidatenranglijst",
+    "empty": "Geen kandidaten om te vergelijken.",
+    "comparison": "Vergelijking naast elkaar",
+    "radar": "Radarprofiel",
+    "byCriterion": "Per criterium",
+    "selectToCompare": "Selecteer om te vergelijken (max. 2)",
+    "selectSecond": "Selecteer een tweede kandidaat om te vergelijken.",
+    "openInterview": "Interview",
+    "noInterview": "Geen interview vastgelegd."
+  },
   "common": {
     "back": "Terug",
     "cancel": "Annuleren",

@@ -8,10 +8,23 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Modifié
+- **`README.md` mis à jour** pour refléter l'ensemble des changements : entité Entreprise
+  singleton et navigation en cascade, critères de sélection et évaluations personnalisées,
+  champs « Spécificités du candidat », rendu/édition markdown, résumé d'entretien dans la
+  langue de l'UI, cinq langues d'interface (FR/EN/ET/DE/NL), nouveaux endpoints et
+  arborescence modulaire (modèles backend en package, hooks de formulaire côté frontend).
 - Le **sélecteur de langue** est déplacé du coin supérieur droit de la page vers le **bas du
   volet latéral gauche** (sidebar).
 
 ### Ajouté
+- **Tableau de bord de résultats par poste** (`/positions/:id/dashboard`) pour comparer les
+  candidats et faciliter la décision. Trois visualisations : (1) un **classement** trié sur un
+  **score global** (moyenne des 4 critères + évaluations personnalisées) avec badge coloré
+  (vert ≥7 / ambre / rouge) et mini-barres par critère ; (2) un **radar** des forces/faiblesses
+  d'un candidat ; (3) une **comparaison côte à côte de 2 candidats** (radar superposé, barres
+  par critère, résumés et évaluations en regard). Accessible depuis un bouton **« Tableau de
+  bord »** sur la page d'un poste. Nouvel endpoint agrégé `GET /positions/{id}/candidates/scores`
+  et ajout de la dépendance `recharts`.
 - **Traductions estonienne (et), allemande (de) et néerlandaise (nl)** ajoutées en plus du
   français et de l'anglais. Le **sélecteur de langue** affiche désormais l'ensemble des langues
   prises en charge et détecte la langue active de manière robuste (gestion des variantes

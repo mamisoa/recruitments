@@ -114,6 +114,19 @@
     "promptTitle": "An die KI gesendeter Prompt",
     "summaryPlaceholder": "Die generierte Zusammenfassung erscheint hier und bleibt bearbeitbar."
   },
+  "dashboard": {
+    "heading": "Dashboard",
+    "open": "Dashboard",
+    "ranking": "Kandidaten-Rangliste",
+    "empty": "Keine Kandidaten zum Vergleichen.",
+    "comparison": "Vergleich nebeneinander",
+    "radar": "Radarprofil",
+    "byCriterion": "Nach Kriterium",
+    "selectToCompare": "Zum Vergleichen auswählen (max. 2)",
+    "selectSecond": "Wählen Sie einen zweiten Kandidaten zum Vergleichen.",
+    "openInterview": "Interview",
+    "noInterview": "Kein Interview erfasst."
+  },
   "common": {
     "back": "Zurück",
     "cancel": "Abbrechen",

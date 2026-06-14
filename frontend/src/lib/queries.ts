@@ -9,6 +9,7 @@ export const qk = {
   candidates: (positionId: number) => ['candidates', positionId] as const,
   candidate: (id: number) => ['candidate', id] as const,
   sheet: (id: number) => ['sheet', id] as const,
+  dashboard: (positionId: number) => ['dashboard', positionId] as const,
 }
 
 export const useHealth = () => useQuery({ queryKey: qk.health, queryFn: api.getHealth })
@@ -33,3 +34,9 @@ export const useCandidate = (id: number) =>
 
 export const useInterviewSheet = (id: number) =>
   useQuery({ queryKey: qk.sheet(id), queryFn: () => api.getInterviewSheet(id) })
+
+export const useCandidateScores = (positionId: number) =>
+  useQuery({
+    queryKey: qk.dashboard(positionId),
+    queryFn: () => api.listCandidateScores(positionId),
+  })
