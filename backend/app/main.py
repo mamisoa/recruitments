@@ -22,6 +22,10 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "..", "static")
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     create_db_and_tables()
+    # Opt-in demo seeding (SEED_DEMO=1); no-op on the real instance and on a seeded DB.
+    from app.demo_seed import seed_demo
+
+    seed_demo()
     yield
 
 

@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     upload_dir: str = "./data/uploads"
     max_upload_mb: int = 15
 
+    # Demo / Example mode: when SEED_DEMO=1, the app seeds fictional data on an
+    # empty DB (see app.demo_seed). Off by default, so the real instance is never seeded.
+    seed_demo: bool = False
+
     # CORS (dev only; SPA is same-origin in prod so leave empty there)
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 

@@ -64,6 +64,34 @@ docker compose up --build
 The SQLite database and uploaded CVs live on the `app-data` named volume, so they
 survive `docker compose down && docker compose up`.
 
+## Demo / Example mode (for screenshots & blog material)
+
+A separate, **fully isolated** stack seeds fictional-but-realistic data — the
+*Transmind AI* company, one open *Senior AI Solutions Engineer* position, and **10
+international candidates** (each with a CV, interview scores, notes and an AI-style
+summary). Free-text fields rotate through the five UI languages (ET, NL, DE, FR, EN),
+so the dashboard naturally showcases the multilingual workflow. Use the app exactly as
+you would in production.
+
+```bash
+docker compose -f docker-compose.demo.yml up --build
+# open http://localhost:8001
+```
+
+It runs **alongside** the real app and never touches it: distinct Docker project
+(`recruitments-demo`), distinct volume (`demo-data` ≠ `app-data`), distinct port
+(8001 ≠ 8000), and a `SEED_DEMO=1` flag that *only* exists in the demo compose. The
+seed is opt-in and idempotent — it only populates an empty database, so restarts never
+duplicate data. To wipe and regenerate the demo data from scratch:
+
+```bash
+docker compose -f docker-compose.demo.yml down -v   # -v drops the demo-data volume
+docker compose -f docker-compose.demo.yml up --build
+```
+
+No `.env`/AI key is required (the content is pre-filled). If a `.env` with a valid
+`AI_API_KEY` is present, the "generate" buttons also work live during the demo.
+
 ## Local development (hot reload)
 
 Two terminals. The Vite dev server proxies `/api` to the backend, so there's no CORS to

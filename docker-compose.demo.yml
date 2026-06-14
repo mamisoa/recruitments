@@ -1,0 +1,29 @@
+# Demo / Example stack — fully isolated from the real app.
+#   docker compose -f docker-compose.demo.yml up --build   ->  http://localhost:8001
+# Distinct project name + volume + port + SEED_DEMO flag, so it never touches the
+# real instance (docker-compose.yml on :8000 with the app-data volume).
+name: recruitments-demo
+
+services:
+  demo:
+    build: .
+    ports:
+      - "8001:8000"
+    # .env is optional here: if it exists and carries AI_API_KEY, the "generate" buttons
+    # also work live during the demo. The data itself is pre-filled, so no key is required.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      UPLOAD_DIR: /data/uploads
+      # Same-origin in the container, so CORS is unnecessary.
+      CORS_ORIGINS: "[]"
+      # Seed the fictional dataset on first boot (empty DB only).
+      SEED_DEMO: "1"
+    volumes:
+      - demo-data:/data
+    restart: unless-stopped
+
+volumes:
+  demo-data:
