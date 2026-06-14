@@ -163,3 +163,6 @@ The root `/` redirects to `/company`.
   nuanced go / no-go recommendation.
 - `.env` is git-ignored and excluded from the Docker image — pass secrets at runtime.
 ```
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).
