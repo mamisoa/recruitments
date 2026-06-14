@@ -110,6 +110,8 @@ def _build_context(
             lines.append(f"Company:\n{position.company_presentation}")
         if position.job_presentation:
             lines.append(f"Role:\n{position.job_presentation}")
+        if position.selection_criteria:
+            lines.append(f"Selection criteria:\n{position.selection_criteria}")
     lines.append("\n# Candidate")
     lines.append(f"Name: {candidate.prenom} {candidate.nom}")
     if candidate.age is not None:

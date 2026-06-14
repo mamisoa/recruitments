@@ -39,6 +39,7 @@ class PositionBase(SQLModel):
     job_is_url: bool = False
     company_presentation: str | None = None  # AI-generated, editable
     job_presentation: str | None = None  # AI-generated, editable
+    selection_criteria: str | None = None  # editable, manual
 
 
 class Position(PositionBase, table=True):
@@ -65,6 +66,7 @@ class PositionUpdate(SQLModel):
     job_is_url: bool | None = None
     company_presentation: str | None = None
     job_presentation: str | None = None
+    selection_criteria: str | None = None
 
 
 class PositionRead(PositionBase):

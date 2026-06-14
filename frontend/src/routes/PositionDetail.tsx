@@ -48,6 +48,7 @@ export function PositionDetail() {
         job_is_url: form.job_is_url,
         company_presentation: form.company_presentation,
         job_presentation: form.job_presentation,
+        selection_criteria: form.selection_criteria,
       }),
     onSuccess: (p) => {
       setForm(p)
@@ -171,6 +172,12 @@ export function PositionDetail() {
             value={form.job_presentation ?? ''}
             placeholder={t('position.presentationPlaceholder')}
             onSave={(v) => savePresentation.mutateAsync({ job_presentation: v })}
+          />
+          <EditableMarkdown
+            label={t('position.selectionCriteria')}
+            value={form.selection_criteria ?? ''}
+            placeholder={t('position.presentationPlaceholder')}
+            onSave={(v) => savePresentation.mutateAsync({ selection_criteria: v })}
           />
 
           <Button onClick={() => save.mutate()} disabled={save.isPending}>

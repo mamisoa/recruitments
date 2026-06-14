@@ -6,6 +6,7 @@ export interface Position {
   job_is_url: boolean
   company_presentation: string | null
   job_presentation: string | null
+  selection_criteria: string | null
   ai_model: string | null
   generated_at: string | null
   created_at: string

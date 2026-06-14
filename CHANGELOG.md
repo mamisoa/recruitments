@@ -8,6 +8,13 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- Champ **« Critères de sélection »** dans la fiche du poste, sous les présentations
+  entreprise et poste : champ markdown éditable (même composant et même édition par
+  modale que les présentations), saisi manuellement (non produit par le bouton
+  « Générer avec l'IA »). Persisté dans une nouvelle colonne `selection_criteria` de
+  la table `position` (migration additive légère au démarrage) et intégré au contexte
+  du résumé d'entretien généré par l'IA.
+- Clé d'internationalisation `position.selectionCriteria` (FR/EN).
 - Rappel du **statut marital** et du **statut étudiant** du candidat dans la carte
   « Faits sur le candidat » de la fiche d'entretien (en plus du nom, prénom et
   âge déjà présents), ces informations étant utiles à la rédaction du contrat.

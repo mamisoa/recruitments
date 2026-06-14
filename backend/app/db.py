@@ -88,6 +88,9 @@ def _run_light_migrations() -> None:
             "custom_evaluations": "JSON DEFAULT '[]'",
             "specificites_candidat": "TEXT",
         },
+        "position": {
+            "selection_criteria": "TEXT",
+        },
     }
     inspector = inspect(engine)
     existing_tables = set(inspector.get_table_names())
