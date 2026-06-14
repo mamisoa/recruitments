@@ -21,11 +21,14 @@ import {
  */
 export function EditableMarkdown({
   label,
+  hideLabel = false,
   value,
   placeholder,
   onSave,
 }: {
   label: string
+  /** Hide the inline label row (e.g. when the surrounding card already shows it as a title). */
+  hideLabel?: boolean
   value: string
   placeholder?: string
   onSave: (value: string) => Promise<unknown>
@@ -52,8 +55,14 @@ export function EditableMarkdown({
 
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center justify-between">
-        <Label>{label}</Label>
+      <div
+        className={
+          hideLabel
+            ? 'flex items-center justify-end'
+            : 'flex items-center justify-between'
+        }
+      >
+        {!hideLabel && <Label>{label}</Label>}
         <Button size="sm" variant="ghost" onClick={openModal}>
           <PencilIcon />
           {t('common.edit')}

@@ -15,6 +15,12 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
   `GET /candidates/{id}/interview/summary/prompt` (paramètre `lang`).
 
 ### Modifié
+- **Page détail du poste** réorganisée pour la lisibilité : la configuration (URL de
+  l'entreprise, source de l'annonce, génération) et chacune des trois sections générées
+  — présentation de l'entreprise, présentation du poste, critères de sélection — sont
+  désormais présentées dans des **cartes distinctes** au lieu d'un seul bloc. Le titre
+  de chaque section sert d'en-tête de carte (le label redondant de l'éditeur markdown
+  est masqué via une nouvelle prop `hideLabel`).
 - Le **résumé d'entretien** généré par l'IA s'appuie désormais explicitement sur les
   **critères de sélection** du poste : lorsque la position en définit, le prompt
   demande une section dédiée évaluant le candidat critère par critère, suivie d'une

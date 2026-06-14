@@ -121,6 +121,7 @@ export function PositionDetail() {
         onChange={(e) => set({ title: e.target.value })}
       />
 
+      {/* Position configuration: source inputs + AI generation */}
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>{t('steps.position')}</CardTitle>
@@ -154,35 +155,69 @@ export function PositionDetail() {
             />
           </div>
 
-          <Button
-            onClick={() => generate.mutate()}
-            disabled={generate.isPending || !health?.ai_enabled}
-          >
-            {generate.isPending ? t('position.generating') : t('position.generate')}
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => generate.mutate()}
+              disabled={generate.isPending || !health?.ai_enabled}
+            >
+              {generate.isPending ? t('position.generating') : t('position.generate')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => save.mutate()}
+              disabled={save.isPending}
+            >
+              {t('position.save')}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
+      {/* Company presentation */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>{t('position.companyPresentation')}</CardTitle>
+        </CardHeader>
+        <CardContent>
           <EditableMarkdown
             label={t('position.companyPresentation')}
+            hideLabel
             value={form.company_presentation ?? ''}
             placeholder={t('position.presentationPlaceholder')}
             onSave={(v) => savePresentation.mutateAsync({ company_presentation: v })}
           />
+        </CardContent>
+      </Card>
+
+      {/* Job presentation */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>{t('position.jobPresentation')}</CardTitle>
+        </CardHeader>
+        <CardContent>
           <EditableMarkdown
             label={t('position.jobPresentation')}
+            hideLabel
             value={form.job_presentation ?? ''}
             placeholder={t('position.presentationPlaceholder')}
             onSave={(v) => savePresentation.mutateAsync({ job_presentation: v })}
           />
+        </CardContent>
+      </Card>
+
+      {/* Selection criteria */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>{t('position.selectionCriteria')}</CardTitle>
+        </CardHeader>
+        <CardContent>
           <EditableMarkdown
             label={t('position.selectionCriteria')}
+            hideLabel
             value={form.selection_criteria ?? ''}
             placeholder={t('position.presentationPlaceholder')}
             onSave={(v) => savePresentation.mutateAsync({ selection_criteria: v })}
           />
-
-          <Button onClick={() => save.mutate()} disabled={save.isPending}>
-            {t('position.save')}
-          </Button>
         </CardContent>
       </Card>
 
