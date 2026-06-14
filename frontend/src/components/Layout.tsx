@@ -71,10 +71,6 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-background text-foreground md:flex">
-      <div className="fixed right-4 top-4 z-50">
-        <LanguageSwitcher />
-      </div>
-
       <aside className="border-b md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:self-start md:border-b-0 md:border-r">
         <div className="flex h-full flex-col gap-4 p-4">
           <Link to="/" className="flex flex-col">
@@ -98,11 +94,12 @@ export function Layout() {
             />
           </nav>
 
-          {health && !health.ai_enabled && (
-            <div className="mt-auto">
+          <div className="mt-auto flex flex-col gap-2">
+            {health && !health.ai_enabled && (
               <span className="text-xs text-destructive">{t('common.aiDisabled')}</span>
-            </div>
-          )}
+            )}
+            <LanguageSwitcher />
+          </div>
         </div>
       </aside>
 

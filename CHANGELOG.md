@@ -7,6 +7,10 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Modifié
+- Le **sélecteur de langue** est déplacé du coin supérieur droit de la page vers le **bas du
+  volet latéral gauche** (sidebar).
+
 ### Ajouté
 - **Traductions estonienne (et), allemande (de) et néerlandaise (nl)** ajoutées en plus du
   français et de l'anglais. Le **sélecteur de langue** affiche désormais l'ensemble des langues
