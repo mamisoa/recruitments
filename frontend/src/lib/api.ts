@@ -2,6 +2,7 @@ import type {
   Candidate,
   CandidateDetail,
   CandidateIdentifiers,
+  Company,
   CvFile,
   Interview,
   InterviewSheet,
@@ -45,6 +46,13 @@ const json = (body: unknown): RequestInit => ({ body: JSON.stringify(body) })
 // --- Health ---------------------------------------------------------------- //
 export const getHealth = () =>
   request<{ status: string; ai_enabled: boolean }>('/health')
+
+// --- Company (singleton) --------------------------------------------------- //
+export const getCompany = () => request<Company>('/company')
+export const updateCompany = (data: Partial<Company>) =>
+  request<Company>('/company', { method: 'PUT', ...json(data) })
+export const generateCompany = () =>
+  request<Company>('/company/generate', { method: 'POST' })
 
 // --- Positions ------------------------------------------------------------- //
 export const listPositions = () => request<PositionWithCounts[]>('/positions')

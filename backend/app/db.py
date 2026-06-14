@@ -72,6 +72,7 @@ def create_db_and_tables() -> None:
 
     SQLModel.metadata.create_all(engine)
     _run_light_migrations()
+    _seed_company_singleton()
 
 
 def _run_light_migrations() -> None:
@@ -104,6 +105,58 @@ def _run_light_migrations() -> None:
                     conn.execute(
                         text(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}")
                     )
+
+
+def _seed_company_singleton() -> None:
+    """Seed the singleton Company row (id=1) without destroying any data.
+
+    The company used to live per-position (``position.company_url`` /
+    ``position.company_presentation``). Those columns and rows are left fully
+    intact — this only INSERTs the singleton, backfilling it from the most
+    recently updated position that actually has a company presentation, so the
+    Company page is pre-populated instead of empty. Strictly non-destructive:
+    no DROP, ALTER, or DELETE is ever issued here.
+    """
+    from datetime import datetime, timezone
+
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(engine)
+    existing_tables = set(inspector.get_table_names())
+    if "company" not in existing_tables:
+        return
+
+    with engine.begin() as conn:
+        already = conn.execute(text("SELECT COUNT(*) FROM company")).scalar()
+        if already:
+            return
+
+        url: str | None = None
+        presentation: str | None = None
+        # Backfill only if the old per-position columns still exist in the DB.
+        if "position" in existing_tables:
+            pos_cols = {col["name"] for col in inspector.get_columns("position")}
+            if {"company_url", "company_presentation"} <= pos_cols:
+                row = conn.execute(
+                    text(
+                        "SELECT company_url, company_presentation FROM position "
+                        "WHERE company_presentation IS NOT NULL "
+                        "AND TRIM(company_presentation) != '' "
+                        "ORDER BY updated_at DESC LIMIT 1"
+                    )
+                ).first()
+                if row is not None:
+                    url, presentation = row[0], row[1]
+
+        now = datetime.now(timezone.utc).isoformat()
+        conn.execute(
+            text(
+                "INSERT INTO company "
+                "(id, name, company_url, company_presentation, created_at, updated_at) "
+                "VALUES (1, '', :url, :presentation, :now, :now)"
+            ),
+            {"url": url, "presentation": presentation, "now": now},
+        )
 
 
 def get_session() -> Generator[Session, None, None]:

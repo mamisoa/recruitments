@@ -14,7 +14,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import settings
 from app.db import create_db_and_tables
-from app.routers import candidates, interview, positions
+from app.routers import candidates, company, interview, positions
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "..", "static")
 
@@ -62,6 +62,7 @@ def health() -> dict[str, object]:
     return {"status": "ok", "ai_enabled": settings.ai_enabled}
 
 
+api.include_router(company.router)
 api.include_router(positions.router)
 api.include_router(candidates.router)
 api.include_router(interview.router)

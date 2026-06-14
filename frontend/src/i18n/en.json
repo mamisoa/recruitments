@@ -4,13 +4,26 @@
     "subtitle": "Interview assistant"
   },
   "nav": {
+    "company": "Company",
     "positions": "Positions",
     "language": "Language"
   },
   "steps": {
-    "position": "1. Position & company",
+    "position": "1. Position",
     "candidate": "2. Candidate",
     "interview": "3. Interview sheet"
+  },
+  "company": {
+    "heading": "Company",
+    "name": "Company name",
+    "namePlaceholder": "e.g. Acme Ltd",
+    "url": "Company URL",
+    "urlPlaceholder": "https://company.com",
+    "generate": "Generate with AI",
+    "generating": "Generating…",
+    "presentation": "Company presentation",
+    "presentationPlaceholder": "Generated text appears here and stays editable.",
+    "save": "Save"
   },
   "positions": {
     "heading": "Positions",

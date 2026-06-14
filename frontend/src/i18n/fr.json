@@ -4,13 +4,26 @@
     "subtitle": "Assistant d'entretien"
   },
   "nav": {
+    "company": "Entreprise",
     "positions": "Postes",
     "language": "Langue"
   },
   "steps": {
-    "position": "1. Poste & entreprise",
+    "position": "1. Poste",
     "candidate": "2. Candidat",
     "interview": "3. Fiche d'entretien"
+  },
+  "company": {
+    "heading": "Entreprise",
+    "name": "Nom de l'entreprise",
+    "namePlaceholder": "ex. Acme SARL",
+    "url": "URL de l'entreprise",
+    "urlPlaceholder": "https://entreprise.com",
+    "generate": "Générer avec l'IA",
+    "generating": "Génération…",
+    "presentation": "Présentation de l'entreprise",
+    "presentationPlaceholder": "Le texte généré apparaîtra ici et reste modifiable.",
+    "save": "Enregistrer"
   },
   "positions": {
     "heading": "Postes",

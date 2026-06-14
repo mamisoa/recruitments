@@ -30,14 +30,43 @@ ISIKUKOOD_RE = re.compile(r"^\d{11}$")
 
 
 # --------------------------------------------------------------------------- #
-# Position (reusable company + job context)
+# Company (singleton: shared across all positions)
+# --------------------------------------------------------------------------- #
+class CompanyBase(SQLModel):
+    name: str = ""
+    company_url: str | None = None
+    company_presentation: str | None = None  # AI-generated, editable
+
+
+class Company(CompanyBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    ai_model: str | None = None
+    generated_at: datetime | None = None
+    created_at: datetime = Field(default_factory=utcnow)
+    updated_at: datetime = Field(default_factory=utcnow)
+
+
+class CompanyUpdate(SQLModel):
+    name: str | None = None
+    company_url: str | None = None
+    company_presentation: str | None = None
+
+
+class CompanyRead(CompanyBase):
+    id: int
+    ai_model: str | None
+    generated_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
+
+
+# --------------------------------------------------------------------------- #
+# Position (reusable job context; company lives on the Company singleton)
 # --------------------------------------------------------------------------- #
 class PositionBase(SQLModel):
     title: str = ""
-    company_url: str | None = None
     job_source: str | None = None  # job description: a URL or pasted text
     job_is_url: bool = False
-    company_presentation: str | None = None  # AI-generated, editable
     job_presentation: str | None = None  # AI-generated, editable
     selection_criteria: str | None = None  # editable, manual
 
@@ -61,10 +90,8 @@ class PositionCreate(PositionBase):
 
 class PositionUpdate(SQLModel):
     title: str | None = None
-    company_url: str | None = None
     job_source: str | None = None
     job_is_url: bool | None = None
-    company_presentation: str | None = None
     job_presentation: str | None = None
     selection_criteria: str | None = None
 

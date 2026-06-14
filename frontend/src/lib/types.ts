@@ -1,10 +1,19 @@
+export interface Company {
+  id: number
+  name: string
+  company_url: string | null
+  company_presentation: string | null
+  ai_model: string | null
+  generated_at: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface Position {
   id: number
   title: string
-  company_url: string | null
   job_source: string | null
   job_is_url: boolean
-  company_presentation: string | null
   job_presentation: string | null
   selection_criteria: string | null
   ai_model: string | null

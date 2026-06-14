@@ -8,6 +8,7 @@ from app.ai import agents
 from app.db import SessionDep
 from app.models import (
     Candidate,
+    Company,
     Interview,
     InterviewRead,
     InterviewUpdate,
@@ -68,8 +69,9 @@ async def generate_interview_summary(
     candidate = _candidate_or_404(session, candidate_id)
     interview = _get_or_create_interview(session, candidate)
     position = session.get(Position, candidate.position_id)
+    company = session.get(Company, 1)
 
-    context = _build_context(position, candidate, interview)
+    context = _build_context(company, position, candidate, interview)
     try:
         summary = await agents.generate_interview_summary(context, lang)
     except RuntimeError as exc:
@@ -96,7 +98,8 @@ def get_interview_summary_prompt(
     candidate = _candidate_or_404(session, candidate_id)
     interview = _get_or_create_interview(session, candidate)
     position = session.get(Position, candidate.position_id)
-    context = _build_context(position, candidate, interview)
+    company = session.get(Company, 1)
+    context = _build_context(company, position, candidate, interview)
     return {"prompt": agents.compose_interview_prompt(context, lang)}
 
 
@@ -117,16 +120,19 @@ def _eval_title(evaluation: object) -> str:
 
 
 def _build_context(
-    position: Position | None, candidate: Candidate, interview: Interview
+    company: Company | None,
+    position: Position | None,
+    candidate: Candidate,
+    interview: Interview,
 ) -> str:
     lines: list[str] = []
-    if position:
+    if position or (company and company.company_presentation):
         lines.append("# Company & role context")
-        if position.company_presentation:
-            lines.append(f"Company:\n{position.company_presentation}")
-        if position.job_presentation:
+        if company and company.company_presentation:
+            lines.append(f"Company:\n{company.company_presentation}")
+        if position and position.job_presentation:
             lines.append(f"Role:\n{position.job_presentation}")
-        if position.selection_criteria:
+        if position and position.selection_criteria:
             lines.append(f"Selection criteria:\n{position.selection_criteria}")
     lines.append("\n# Candidate")
     lines.append(f"Name: {candidate.prenom} {candidate.nom}")

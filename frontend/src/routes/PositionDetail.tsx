@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 import * as api from '@/lib/api'
 import type { Position } from '@/lib/types'
 import { usePosition, useCandidates, useHealth, qk } from '@/lib/queries'
-import { Stepper } from '@/components/Stepper'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -43,10 +42,8 @@ export function PositionDetail() {
     mutationFn: () =>
       api.updatePosition(id, {
         title: form.title,
-        company_url: form.company_url,
         job_source: form.job_source,
         job_is_url: form.job_is_url,
-        company_presentation: form.company_presentation,
         job_presentation: form.job_presentation,
         selection_criteria: form.selection_criteria,
       }),
@@ -74,7 +71,6 @@ export function PositionDetail() {
     mutationFn: async () => {
       // Persist current inputs before generating so the backend uses them.
       await api.updatePosition(id, {
-        company_url: form.company_url,
         job_source: form.job_source,
         job_is_url: form.job_is_url,
       })
@@ -105,15 +101,6 @@ export function PositionDetail() {
 
   return (
     <div>
-      <Stepper
-        current="position"
-        steps={[
-          { key: 'position', to: null },
-          { key: 'candidate', to: null },
-          { key: 'interview', to: null },
-        ]}
-      />
-
       <Input
         className="mb-4 text-lg font-semibold"
         value={form.title ?? ''}
@@ -127,14 +114,6 @@ export function PositionDetail() {
           <CardTitle>{t('steps.position')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-1.5">
-            <Label>{t('position.companyUrl')}</Label>
-            <Input
-              value={form.company_url ?? ''}
-              placeholder={t('position.companyUrlPlaceholder')}
-              onChange={(e) => set({ company_url: e.target.value })}
-            />
-          </div>
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label>{t('position.jobSource')}</Label>
@@ -170,22 +149,6 @@ export function PositionDetail() {
               {t('position.save')}
             </Button>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Company presentation */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>{t('position.companyPresentation')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <EditableMarkdown
-            label={t('position.companyPresentation')}
-            hideLabel
-            value={form.company_presentation ?? ''}
-            placeholder={t('position.presentationPlaceholder')}
-            onSave={(v) => savePresentation.mutateAsync({ company_presentation: v })}
-          />
         </CardContent>
       </Card>
 

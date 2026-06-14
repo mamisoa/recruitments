@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as api from '@/lib/api'
 import type { CustomEvaluation, Interview } from '@/lib/types'
-import { useInterviewSheet, useHealth, qk } from '@/lib/queries'
+import { useInterviewSheet, useCompany, useHealth, qk } from '@/lib/queries'
 import { Stepper } from '@/components/Stepper'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -41,6 +41,7 @@ export function InterviewPage() {
   const { t, i18n } = useTranslation()
   const queryClient = useQueryClient()
   const { data: sheet, isLoading } = useInterviewSheet(id)
+  const { data: company } = useCompany()
   const { data: health } = useHealth()
 
   const [state, setState] = useState<State>({})
@@ -134,9 +135,9 @@ export function InterviewPage() {
             <div>
               <p className="font-medium">{position.title}</p>
             </div>
-            {position.company_presentation && (
+            {company?.company_presentation && (
               <Markdown className="text-muted-foreground">
-                {position.company_presentation}
+                {company.company_presentation}
               </Markdown>
             )}
             {position.job_presentation && (

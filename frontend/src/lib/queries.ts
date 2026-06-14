@@ -3,6 +3,7 @@ import * as api from './api'
 
 export const qk = {
   health: ['health'] as const,
+  company: ['company'] as const,
   positions: ['positions'] as const,
   position: (id: number) => ['position', id] as const,
   candidates: (positionId: number) => ['candidates', positionId] as const,
@@ -11,6 +12,9 @@ export const qk = {
 }
 
 export const useHealth = () => useQuery({ queryKey: qk.health, queryFn: api.getHealth })
+
+export const useCompany = () =>
+  useQuery({ queryKey: qk.company, queryFn: api.getCompany })
 
 export const usePositions = () =>
   useQuery({ queryKey: qk.positions, queryFn: api.listPositions })

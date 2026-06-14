@@ -80,28 +80,21 @@ def update_position(
 
 @router.post("/{position_id}/generate", response_model=PositionRead)
 async def generate_presentations(position_id: int, session: SessionDep) -> Position:
-    """Scrape the company URL / job source and AI-generate both presentation texts."""
+    """Scrape the job source and AI-generate the job presentation text."""
     position = _get_or_404(session, position_id)
 
-    if not position.company_url and not position.job_source:
+    if not position.job_source:
         raise HTTPException(
             status_code=400,
-            detail="Provide at least a company URL or a job description first.",
+            detail="Provide a job description first.",
         )
 
     try:
-        if position.company_url:
-            company_text = await fetch_clean_text(position.company_url)
-            position.company_presentation = await agents.generate_company_presentation(
-                company_text
-            )
-
-        if position.job_source:
-            if position.job_is_url:
-                job_text = await fetch_clean_text(position.job_source)
-            else:
-                job_text = position.job_source
-            position.job_presentation = await agents.generate_job_presentation(job_text)
+        if position.job_is_url:
+            job_text = await fetch_clean_text(position.job_source)
+        else:
+            job_text = position.job_source
+        position.job_presentation = await agents.generate_job_presentation(job_text)
     except httpx.HTTPError as exc:
         raise HTTPException(status_code=502, detail=f"Failed to fetch URL: {exc}") from exc
     except RuntimeError as exc:  # AI not configured

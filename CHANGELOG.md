@@ -8,6 +8,14 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Navigation en cascade par sidebar** (Entreprise → Postes → Candidats) en remplacement
+  de la navigation par étapes en haut de page. Une **sidebar latérale persistante** propose
+  deux sections : **1 · Entreprise** et **2 · Postes** (la section Postes reste active sur les
+  pages de détail d'un poste). En mobile, la sidebar se replie en barre horizontale en haut.
+- **Entité Entreprise (singleton)** : la description d'entreprise et sa génération par IA
+  vivent désormais dans une **page Entreprise dédiée** (`/company`), partagée par tous les
+  postes, au lieu d'être dupliquée sur chaque poste. Nouveaux endpoints `GET /company`,
+  `PUT /company` et `POST /company/generate`. La racine `/` redirige vers `/company`.
 - Bouton **« Voir le prompt »** sur la carte du résumé d'entretien : il affiche, dans
   une modale en lecture seule et rendu en markdown, le prompt complet (prompt système
   + message utilisateur) reconstruit à partir des données enregistrées — soit ce qui
@@ -15,12 +23,16 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
   `GET /candidates/{id}/interview/summary/prompt` (paramètre `lang`).
 
 ### Modifié
-- **Page détail du poste** réorganisée pour la lisibilité : la configuration (URL de
-  l'entreprise, source de l'annonce, génération) et chacune des trois sections générées
-  — présentation de l'entreprise, présentation du poste, critères de sélection — sont
-  désormais présentées dans des **cartes distinctes** au lieu d'un seul bloc. Le titre
-  de chaque section sert d'en-tête de carte (le label redondant de l'éditeur markdown
-  est masqué via une nouvelle prop `hideLabel`).
+- **Page détail du poste** allégée : l'URL et la présentation de l'entreprise ont migré
+  vers la page Entreprise. Le poste ne contient plus que la source de l'annonce + génération
+  IA (présentation du poste uniquement), la présentation du poste, les critères de sélection
+  et la liste des candidats. Le contexte d'entretien lit la présentation d'entreprise depuis
+  le singleton Entreprise.
+- **Page détail du poste** réorganisée pour la lisibilité : la configuration (source de
+  l'annonce, génération) et chacune des sections générées — présentation du poste, critères
+  de sélection — sont désormais présentées dans des **cartes distinctes** au lieu d'un seul
+  bloc. Le titre de chaque section sert d'en-tête de carte (le label redondant de l'éditeur
+  markdown est masqué via une nouvelle prop `hideLabel`).
 - Le **résumé d'entretien** généré par l'IA s'appuie désormais explicitement sur les
   **critères de sélection** du poste : lorsque la position en définit, le prompt
   demande une section dédiée évaluant le candidat critère par critère, suivie d'une
