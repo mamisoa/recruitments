@@ -60,7 +60,14 @@ export function CandidateCvCard({
             key={cv.id}
             className="flex items-center justify-between rounded-md border px-3 py-1.5 text-sm"
           >
-            <span className="truncate">{cv.original_name}</span>
+            <a
+              href={`/api/candidates/${candidate.id}/cv/${cv.id}`}
+              target="_blank"
+              rel="noreferrer"
+              className="truncate text-primary underline-offset-2 hover:underline"
+            >
+              {cv.original_name}
+            </a>
             <Button
               type="button"
               size="sm"

@@ -75,12 +75,12 @@ you would in production.
 
 ```bash
 docker compose -f docker-compose.demo.yml up --build
-# open http://localhost:8001
+# open http://localhost:8010
 ```
 
 It runs **alongside** the real app and never touches it: distinct Docker project
 (`recruitments-demo`), distinct volume (`demo-data` ≠ `app-data`), distinct port
-(8001 ≠ 8000), and a `SEED_DEMO=1` flag that *only* exists in the demo compose. The
+(8010 ≠ 8000), and a `SEED_DEMO=1` flag that *only* exists in the demo compose. The
 seed is opt-in and idempotent — it only populates an empty database, so restarts never
 duplicate data. To wipe and regenerate the demo data from scratch:
 

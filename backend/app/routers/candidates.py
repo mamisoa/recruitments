@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import urllib.parse
+
 from fastapi import APIRouter, HTTPException, UploadFile
+from fastapi.responses import Response
 from sqlmodel import select
 
 from app.ai import agents
@@ -149,6 +152,25 @@ async def upload_cvs(
     for cv in saved:
         session.refresh(cv)
     return saved
+
+
+@router.get("/candidates/{candidate_id}/cv/{cv_id}")
+def get_cv_file(candidate_id: int, cv_id: int, session: SessionDep) -> Response:
+    """Serve the raw CV bytes (inline) so the browser can preview/download it."""
+    cv = session.get(CvFile, cv_id)
+    if cv is None or cv.candidate_id != candidate_id:
+        raise HTTPException(status_code=404, detail="CV file not found")
+    try:
+        data = storage.read_bytes(cv.stored_path)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="CV file is missing on disk")
+    # inline so PDFs open in the browser viewer; filename* keeps the original name.
+    quoted = urllib.parse.quote(cv.original_name)
+    return Response(
+        content=data,
+        media_type=cv.content_type or "application/octet-stream",
+        headers={"Content-Disposition": f"inline; filename*=UTF-8''{quoted}"},
+    )
 
 
 @router.delete("/candidates/{candidate_id}/cv/{cv_id}", status_code=204)
