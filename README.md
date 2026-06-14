@@ -1,5 +1,7 @@
 # Recruitments — AI-assisted interview workflow
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 A single-container web app that guides a recruiter through a fluid, step-by-step
 interview workflow, with AI assistance at every stage. Navigation follows a
 **cascade** — Company → Positions → Candidates — driven by a persistent left sidebar:
