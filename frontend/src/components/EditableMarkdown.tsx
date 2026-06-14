@@ -66,12 +66,12 @@ export function EditableMarkdown({
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="flex max-h-[calc(100dvh-2rem)] flex-col sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>{label}</DialogTitle>
           </DialogHeader>
           <Textarea
-            rows={16}
+            className="max-h-[60vh] min-h-[12rem] flex-1"
             value={draft}
             placeholder={placeholder}
             onChange={(e) => setDraft(e.target.value)}

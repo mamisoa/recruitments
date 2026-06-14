@@ -7,6 +7,14 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- Les modales d'édition markdown (`EditableMarkdown` : résumé du candidat,
+  présentations et critères de sélection du poste) ne dépassent plus la hauteur
+  de l'écran lorsque le texte est long. La modale est désormais bornée à la
+  hauteur du viewport, l'en-tête et le bouton **Enregistrer** restent visibles,
+  et seul le textarea défile en interne. Un plafond de hauteur + `overflow-y-auto`
+  ont aussi été ajoutés au primitif `DialogContent` comme filet de sécurité.
+
 ### Modifié
 - Le champ **« Résumé du candidat »** de la fiche candidat s'affiche désormais en
   markdown formaté (comme les présentations de la fiche du poste). Un bouton
