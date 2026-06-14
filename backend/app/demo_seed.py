@@ -9,8 +9,9 @@ useful for screenshots / blog material. Strictly opt-in and idempotent:
   doesn't duplicate anything (reset with ``docker compose ... down -v``).
 
 Everything (company, the single open position, the 10 candidates with their interviews
-and CV files) is generated here in code — no extra dependency, no PDF tooling. CVs are
-written as ``.txt`` files into the upload dir, exactly like a real ``text/plain`` upload.
+and CV files) is generated here in code — no extra dependency. CVs are rendered to
+``.pdf`` files (a tiny hand-built PDF, WinAnsi/Helvetica) and written into the upload
+dir exactly like a real ``application/pdf`` upload.
 
 The candidates form an international pool: their free-text fields (profile summary,
 interview notes, interview summary) rotate through the app's five UI languages
@@ -692,18 +693,80 @@ Niamh, but a dependable, high-output engineer. Among the top of the field.
 ]
 
 
-def _write_cv_file(prenom: str, nom: str, body: str) -> tuple[str, str, int]:
-    """Persist a CV body as a .txt file, mirroring storage.save_upload conventions.
+def _build_cv_pdf(text: str) -> bytes:
+    """Render plain CV text into a minimal single-page PDF (no dependency).
+
+    Uses the base-14 Helvetica font with WinAnsiEncoding, so accented Latin text
+    (õ ä ö ü é è à ç …) and common typography (— « » ' ') render correctly: the
+    bytes are encoded as cp1252, which WinAnsiEncoding maps glyph-for-glyph.
+    """
+    # Soft-wrap long lines so they don't run off the page; CVs are short (1 page).
+    lines: list[str] = []
+    for raw in text.split("\n"):
+        if len(raw) <= 95:
+            lines.append(raw)
+            continue
+        cur = ""
+        for word in raw.split(" "):
+            if cur and len(cur) + len(word) + 1 > 95:
+                lines.append(cur)
+                cur = word
+            else:
+                cur = word if not cur else f"{cur} {word}"
+        lines.append(cur)
+
+    # Content stream: one text line per source line, 10pt Helvetica, 14pt leading.
+    parts = [b"BT\n/F1 10 Tf\n14 TL\n50 800 Td\n"]
+    for ln in lines:
+        if ln.strip() == "":
+            parts.append(b"T*\n")
+            continue
+        esc = ln.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+        parts.append(b"(" + esc.encode("cp1252", "replace") + b") Tj T*\n")
+    parts.append(b"ET")
+    content = b"".join(parts)
+
+    objects = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] "
+        b"/Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica "
+        b"/Encoding /WinAnsiEncoding >>",
+        b"<< /Length " + str(len(content)).encode() + b" >>\nstream\n"
+        + content + b"\nendstream",
+    ]
+
+    out = bytearray(b"%PDF-1.4\n")
+    offsets: list[int] = []
+    for i, body in enumerate(objects, start=1):
+        offsets.append(len(out))
+        out += str(i).encode() + b" 0 obj\n" + body + b"\nendobj\n"
+
+    xref_pos = len(out)
+    size = len(objects) + 1
+    out += b"xref\n0 " + str(size).encode() + b"\n0000000000 65535 f \n"
+    for off in offsets:
+        out += ("%010d 00000 n \n" % off).encode()
+    out += (
+        b"trailer\n<< /Size " + str(size).encode() + b" /Root 1 0 R >>\n"
+        b"startxref\n" + str(xref_pos).encode() + b"\n%%EOF"
+    )
+    return bytes(out)
+
+
+def _write_cv_pdf(prenom: str, nom: str, body: str) -> tuple[str, str, int]:
+    """Render a CV body to a .pdf file, mirroring storage.save_upload conventions.
 
     Returns ``(original_name, stored_path, size_bytes)``. ``stored_path`` is absolute.
     """
     upload_dir = os.path.abspath(settings.upload_dir)
     os.makedirs(upload_dir, exist_ok=True)
-    stored_path = os.path.join(upload_dir, f"{uuid.uuid4().hex}.txt")
-    data = body.encode("utf-8")
+    stored_path = os.path.join(upload_dir, f"{uuid.uuid4().hex}.pdf")
+    data = _build_cv_pdf(body)
     with open(stored_path, "wb") as out:
         out.write(data)
-    safe = f"{prenom}_{nom}_CV.txt".replace(" ", "_").replace("'", "")
+    safe = f"{prenom}_{nom}_CV.pdf".replace(" ", "_").replace("'", "")
     return safe, stored_path, len(data)
 
 
@@ -774,7 +837,7 @@ def seed_demo() -> None:
             )
             session.add(interview)
 
-            original_name, stored_path, size = _write_cv_file(
+            original_name, stored_path, size = _write_cv_pdf(
                 entry["prenom"], entry["nom"], entry["cv"]
             )
             session.add(
@@ -782,7 +845,7 @@ def seed_demo() -> None:
                     candidate_id=candidate.id,
                     original_name=original_name,
                     stored_path=stored_path,
-                    content_type="text/plain",
+                    content_type="application/pdf",
                     size_bytes=size,
                 )
             )

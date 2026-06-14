@@ -21,3 +21,6 @@ backend/static/
 node_modules/
 frontend/dist/
 *.log
+
+# Local maintenance script (history-rewrite recovery helper)
+sync-after-rewrite.sh
